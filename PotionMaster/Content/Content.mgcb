@@ -10,6 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\..\packages\MonoGame.Extended.Content.Pipeline.1.1.0\tools\MonoGame.Extended.Content.Pipeline.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -36,4 +37,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:main2.png
+
+#begin tiledMaps/dumb_grass.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:tiledMaps/dumb_grass.tmx
 

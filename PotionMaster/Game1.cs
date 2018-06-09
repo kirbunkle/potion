@@ -2,6 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
+using MonoGame.Extended.Tiled;
+using MonoGame.Extended.Tiled.Graphics;
+
 
 namespace PotionMaster
 {
@@ -19,6 +22,8 @@ namespace PotionMaster
         public static KeyboardState keyboardInput;
         public static int dt; // datetime
         public static ContentManager content;
+        public static TiledMap mahMap;
+        public static TiledMapRenderer mapRenderer;
 
         public Game1()
         {
@@ -35,6 +40,9 @@ namespace PotionMaster
         protected override void Initialize()
         {
             base.Initialize();
+            mapRenderer = new TiledMapRenderer(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
         }
 
         /// <summary>
@@ -44,9 +52,9 @@ namespace PotionMaster
         protected override void LoadContent()
         {
             content = Content;
-            spriteBatch = new SpriteBatch(GraphicsDevice);
             playersprite = Content.Load<Texture2D>("dumb_grass");
             playerboi = new PlayerCharacter();
+            mahMap = Content.Load<TiledMap>("tiledMaps/dumb_grass");
         }
 
         /// <summary>
@@ -57,6 +65,7 @@ namespace PotionMaster
         {
             base.UnloadContent();
             Game1.spriteBatch.Dispose();
+            Game1.mapRenderer.Dispose();
             Game1.content.Unload();
         }
 
@@ -73,7 +82,8 @@ namespace PotionMaster
                 Exit();
 
             dt = gameTime.ElapsedGameTime.Milliseconds;
-
+            
+            mapRenderer.Update(mahMap, gameTime);
             playerboi.Update();
             base.Update(gameTime);
         }
@@ -87,8 +97,13 @@ namespace PotionMaster
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
+            mapRenderer.Draw(mahMap);
+            spriteBatch.End();
+
+            spriteBatch.Begin();
             spriteBatch.Draw(playersprite, new Vector2(400, 200), Color.White);
             spriteBatch.End();
+            
             playerboi.Draw();
 
             base.Draw(gameTime);
