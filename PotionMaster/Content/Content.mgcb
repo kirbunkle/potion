@@ -43,3 +43,8 @@
 /processor:TiledMapProcessor
 /build:tiledMaps/dumb_grass.tmx
 
+#begin animations/test1.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:animations/test1.xml
+

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
 
 namespace PotionMaster
 {
@@ -13,13 +14,13 @@ namespace PotionMaster
 
         public PlayerCharacter()
         {
-            speed = 0.25f;
+            speed = 0.15f;
         }
 
         public new void Update()
         {
-            moveX = 0;
-            moveY = 0;
+            float moveX = 0;
+            float moveY = 0;
             if (Game1.keyboardInput.IsKeyDown(Keys.Left))
             {
                 moveX -= speed * Game1.dt;
@@ -36,6 +37,12 @@ namespace PotionMaster
             {
                 moveY += speed * Game1.dt;
             }
+            if ((moveX != 0) && (moveY != 0))
+            {
+                moveX *= 0.7f;
+                moveY *= 0.7f;
+            }
+            Move(moveX, moveY);
             base.Update();
         }
     }

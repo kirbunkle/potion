@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="System.Collections.Generic.Dictionary[System.String, Microsoft.Xna.Framework.Rectangle]">
+    <Item>
+      <Key>main2_000.png</Key>
+      <Value>0 128 32 32</Value>
+    </Item>
+    <Item>
+      <Key>main2_001.png</Key>
+      <Value>32 128 32 32</Value>
+    </Item>
+    <Item>
+      <Key>main2_002.png</Key>
+      <Value>64 128 32 32</Value>
+    </Item>
+
+    <Item>
+      <Key>main2_003.png</Key>
+      <Value>0 160 32 32</Value>
+    </Item>
+    <Item>
+      <Key>main2_004.png</Key>
+      <Value>32 160 32 32</Value>
+    </Item>
+    <Item>
+      <Key>main2_005.png</Key>
+      <Value>64 160 32 32</Value>
+    </Item>
+
+    <Item>
+      <Key>main2_006.png</Key>
+      <Value>0 192 32 32</Value>
+    </Item>
+    <Item>
+      <Key>main2_007.png</Key>
+      <Value>32 192 32 32</Value>
+    </Item>
+    <Item>
+      <Key>main2_008.png</Key>
+      <Value>64 192 32 32</Value>
+    </Item>
+
+    <Item>
+      <Key>main2_009.png</Key>
+      <Value>0 224 32 32</Value>
+    </Item>
+    <Item>
+      <Key>main2_010.png</Key>
+      <Value>32 224 32 32</Value>
+    </Item>
+    <Item>
+      <Key>main2_011.png</Key>
+      <Value>64 224 32 32</Value>
+    </Item>
+  </Asset>
+</XnaContent>
