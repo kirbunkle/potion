@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace PotionMaster
 {
-    class PlayerCharacter : Character
+    public class PlayerCharacter : Character
     {
         private float speed;
 

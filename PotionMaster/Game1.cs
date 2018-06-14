@@ -6,6 +6,7 @@ using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
+using MonoGame.Extended.BitmapFonts;
 using System;
 
 namespace PotionMaster
@@ -16,6 +17,7 @@ namespace PotionMaster
     public class Game1 : Game
     {
         private PlayerCharacter playerboi;
+        private Character binch;
 
         // global variables
         public static GraphicsDeviceManager graphics;
@@ -24,11 +26,13 @@ namespace PotionMaster
         public static int dt; // deltatime
         public static GameTime gt;
         public static ContentManager content;
-        public static TiledMap mahMap;
         public static TiledMapRenderer mapRenderer;
         public static Camera2D camera;
         public static int screenW;
         public static int screenH;
+        public static BitmapFont font;
+        public static int tileSize;
+        public static Location currentLocation;
 
         public Game1()
         {
@@ -45,11 +49,6 @@ namespace PotionMaster
         protected override void Initialize()
         {
             base.Initialize();
-            mapRenderer = new TiledMapRenderer(GraphicsDevice);
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            screenW = 800;
-            screenH = 480;
-            camera = new Camera2D(new BoxingViewportAdapter(Window, GraphicsDevice, screenW, screenH));            
         }
 
         /// <summary>
@@ -58,9 +57,19 @@ namespace PotionMaster
         /// </summary>
         protected override void LoadContent()
         {
+            mapRenderer = new TiledMapRenderer(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            screenW = 800;
+            screenH = 480;
+            camera = new Camera2D(new BoxingViewportAdapter(Window, GraphicsDevice, screenW, screenH));
+            //camera.Zoom = 2;
+            tileSize = 32;
+
             content = Content;
             playerboi = new PlayerCharacter();
-            mahMap = Content.Load<TiledMap>("tiledMaps/dumb_grass");
+            binch = new Character();
+            font = Content.Load<BitmapFont>("fonts/font1");
+            currentLocation = new Location();
         }
 
         /// <summary>
@@ -89,39 +98,34 @@ namespace PotionMaster
 
             dt = gameTime.ElapsedGameTime.Milliseconds;
             gt = gameTime;
-            
-            mapRenderer.Update(mahMap, gameTime);
+
+            currentLocation.Update();
             playerboi.Update();
+            binch.Update();
             
             var oldPos = camera.Position;
-            camera.LookAt(playerboi.position);
+            camera.LookAt(playerboi.GetPosition());
             float diffX = Math.Abs(camera.Position.X - oldPos.X);
             float diffY = Math.Abs(camera.Position.Y - oldPos.Y);
             if ((diffX > 0.50) || (diffY > 0.50))
             {
-                oldPos += (camera.Position - oldPos) / 8; // TODO: figure out how to do the sum of squares to get the best path to the player
-                if (diffX > 4)
-                {
-                    oldPos.X = (float)Math.Round(oldPos.X);
-                }                
-                if (diffY > 4)
-                { 
-                    oldPos.Y = (float)Math.Round(oldPos.Y);
-                }
+                oldPos += (camera.Position - oldPos) / 12; 
+                oldPos.X = (float)Math.Ceiling(oldPos.X);  // snap to nearest pixel
+                oldPos.Y = (float)Math.Ceiling(oldPos.Y);
                 camera.Position = oldPos;
             }
             oldPos = camera.Position;
             if (oldPos.X < 0)
                 oldPos.X = 0;
-            if (oldPos.X > (mahMap.WidthInPixels - screenW))
-                oldPos.X = mahMap.WidthInPixels - screenW;
+            if (oldPos.X > (currentLocation.WidthInPixels() - screenW))
+                oldPos.X = currentLocation.WidthInPixels() - screenW;
             if (oldPos.Y < 0)
                 oldPos.Y = 0;
-            if (oldPos.Y > (mahMap.HeightInPixels - screenH))
-                oldPos.Y = mahMap.HeightInPixels - screenH;
+            if (oldPos.Y > (currentLocation.HeightInPixels() - screenH))
+                oldPos.Y = currentLocation.HeightInPixels() - screenH;
             camera.Position = oldPos;
+            //camera.ZoomIn(camera.Zoom*dt*0.01f);
             base.Update(gameTime);
-
         }
 
         /// <summary>
@@ -132,11 +136,17 @@ namespace PotionMaster
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp);
-            mapRenderer.Draw(mahMap, camera.GetViewMatrix());
+            // camera draw
+            spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
+            currentLocation.Draw();
             playerboi.Draw();
+            binch.Draw();
             spriteBatch.End();
 
+            // hud draw
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
+            currentLocation.DrawHud();
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }

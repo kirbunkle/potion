@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="System.Collections.Generic.Dictionary[System.String, Microsoft.Xna.Framework.Rectangle]">
+    <Item>
+      <Key>io1_000.png</Key>
+      <Value>0 0 32 32</Value>
+    </Item>
+    <Item>
+      <Key>io1__001.png</Key>
+      <Value>32 0 32 32</Value>
+    </Item>
+    <Item>
+      <Key>io1__002.png</Key>
+      <Value>64 0 32 32</Value>
+    </Item>
+
+    <Item>
+      <Key>io1__003.png</Key>
+      <Value>0 32 32 32</Value>
+    </Item>
+    <Item>
+      <Key>io1__004.png</Key>
+      <Value>32 32 32 32</Value>
+    </Item>
+    <Item>
+      <Key>io1__005.png</Key>
+      <Value>64 32 32 32</Value>
+    </Item>
+
+    <Item>
+      <Key>io1__006.png</Key>
+      <Value>0 64 32 32</Value>
+    </Item>
+    <Item>
+      <Key>io1__007.png</Key>
+      <Value>32 64 32 32</Value>
+    </Item>   
+  </Asset>
+</XnaContent>
