@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="System.Collections.Generic.Dictionary[System.String, Microsoft.Xna.Framework.Rectangle]">
+    <Item>
+      <Key>fireplant_000.png</Key>
+      <Value>0 0 32 32</Value>
+    </Item>
+    <Item>
+      <Key>fireplant_001.png</Key>
+      <Value>32 0 32 32</Value>
+    </Item>
+    <Item>
+      <Key>fireplant_002.png</Key>
+      <Value>0 32 32 32</Value>
+    </Item>
+    <Item>
+      <Key>fireplant_003.png</Key>
+      <Value>32 32 32 32</Value>
+    </Item>
+    <Item>
+      <Key>fireplant_004.png</Key>
+      <Value>0 64 32 32</Value>
+    </Item>
+    <Item>
+      <Key>fireplant_005.png</Key>
+      <Value>32 64 32 32</Value>
+    </Item>
+  </Asset>
+</XnaContent>

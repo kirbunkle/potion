@@ -17,7 +17,6 @@ namespace PotionMaster
     public class Game1 : Game
     {
         private PlayerCharacter playerboi;
-        private Character binch;
 
         // global variables
         public static GraphicsDeviceManager graphics;
@@ -67,7 +66,6 @@ namespace PotionMaster
 
             content = Content;
             playerboi = new PlayerCharacter();
-            binch = new Character();
             font = Content.Load<BitmapFont>("fonts/font1");
             currentLocation = new Location();
         }
@@ -101,7 +99,6 @@ namespace PotionMaster
 
             currentLocation.Update();
             playerboi.Update();
-            binch.Update();
             
             var oldPos = camera.Position;
             camera.LookAt(playerboi.GetPosition());
@@ -140,7 +137,6 @@ namespace PotionMaster
             spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
             currentLocation.Draw();
             playerboi.Draw();
-            binch.Draw();
             spriteBatch.End();
 
             // hud draw

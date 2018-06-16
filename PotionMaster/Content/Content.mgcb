@@ -82,3 +82,32 @@
 /processorParam:TextureFormat=Color
 /build:tiledMaps/tileSheets/dumb_grass.png
 
+#begin spriteSheets/plants/fireplant.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:spriteSheets/plants/fireplant.png
+
+#begin animations/fireplant.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:animations/fireplant.xml
+
+#begin spriteSheets/simplebox.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:spriteSheets/simplebox.png
+

@@ -10,16 +10,21 @@ using MonoGame.Extended.BitmapFonts;
 
 namespace PotionMaster
 {
-    public class Character
+    public enum Direction { Down, Left, Right, Up };
+
+    public class Character : Interactable
     {
         private AnimatedSprite sprite;
         private SpriteSheetAnimationFactory spriteFactory;
         private string curSprite;
         private Rectangle collisionBox;
-        private int posX;
-        private int posY;
+        protected int posX;
+        protected int posY;
         private float velocityX;
         private float velocityY;
+
+        protected Direction facingDirection;
+        
 
         private Rectangle MakeCollisionBoundingBox(AnimatedSprite s)
         {
@@ -69,7 +74,14 @@ namespace PotionMaster
                 posY = 272;
                 sprite = new AnimatedSprite(spriteFactory, curSprite);
             }
+            facingDirection = Direction.Down;
             collisionBox = MakeCollisionBoundingBox(sprite);
+        }
+
+        public override void Interact()
+        {
+            posX += Game1.tileSize * 2;
+            posY += Game1.tileSize * 2;
         }
 
         public Rectangle GetCollisionBox(int mx = 0, int my = 0)
@@ -89,16 +101,30 @@ namespace PotionMaster
         public void Move(float mx, float my)
         {
             string oldSprite = curSprite;
-            if (my > 0) 
+            if (my > 0)
+            {
                 curSprite = "down";
+                facingDirection = Direction.Down;
+            }
             else if (my < 0)
+            {
                 curSprite = "up";
+                facingDirection = Direction.Up;
+            }
             else if (mx < 0)
+            {
                 curSprite = "left";
+                facingDirection = Direction.Left;
+            }
             else if (mx > 0)
+            {
                 curSprite = "right";
+                facingDirection = Direction.Right;
+            }
             else if (!curSprite.Contains("idle"))
+            {
                 curSprite += "_idle";
+            }
 
             if (oldSprite != curSprite)
                 sprite = new AnimatedSprite(spriteFactory, curSprite);
