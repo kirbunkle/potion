@@ -12,14 +12,15 @@ namespace PotionMaster
     public class PlayerCharacter : Character
     {
         private float speed;
-        private bool drawInteractBox;
+        private bool drawToolInteractBox;
         private Texture2D interactBoxTexture;
         private Rectangle interactBoxRectangle;
+        private Rectangle interactToolBoxRectangle;
 
-        private Rectangle FindInteractBoxRectangle()
+        private Rectangle MakeInteractRectangle(int xIn, int yIn)
         {
-            int x = (posX / Game1.tileSize) * Game1.tileSize;
-            int y = (posY / Game1.tileSize) * Game1.tileSize;
+            int x = xIn;
+            int y = yIn;
             switch (facingDirection)
             {
                 case Direction.Down:
@@ -38,11 +39,22 @@ namespace PotionMaster
             return new Rectangle(x, y, Game1.tileSize, Game1.tileSize);
         }
 
+        private Rectangle FindInteractToolBoxRectangle()
+        {
+            return MakeInteractRectangle((posX / Game1.tileSize) * Game1.tileSize, (posY / Game1.tileSize) * Game1.tileSize);
+        }
+
+        private Rectangle FindInteractBoxRectangle()
+        {
+            return MakeInteractRectangle(posX - (Game1.tileSize / 2), posY - (Game1.tileSize / 2));
+        }
+
         public PlayerCharacter()
         {
             speed = 0.15f;
-            drawInteractBox = true;
+            drawToolInteractBox = true;
             interactBoxTexture = Game1.content.Load<Texture2D>("spriteSheets/simplebox");
+            interactToolBoxRectangle = FindInteractToolBoxRectangle();
             interactBoxRectangle = FindInteractBoxRectangle();
         }
 
@@ -73,7 +85,7 @@ namespace PotionMaster
             }
             if (Game1.keyboardInput.IsKeyDown(Keys.Space))
             {
-                Interactable obj = Game1.currentLocation.GetCollidingObject(interactBoxRectangle); // TODO: make generic for interactible 
+                Interactable obj = Game1.currentLocation.GetCollidingObject(interactBoxRectangle);  
                 if (obj != null)
                 {
                     obj.Interact();
@@ -81,16 +93,19 @@ namespace PotionMaster
             }
             Move(moveX, moveY);
             base.Update();
+            interactToolBoxRectangle = FindInteractToolBoxRectangle();
             interactBoxRectangle = FindInteractBoxRectangle();
         }
 
         public new void Draw()
         {
             base.Draw();
-            if (drawInteractBox)
+            if (drawToolInteractBox)
             {
                 Game1.spriteBatch.Draw(interactBoxTexture, GetCollisionBox(), Color.YellowGreen);
-                Game1.spriteBatch.Draw(interactBoxTexture, interactBoxRectangle, Color.OrangeRed);
+                Game1.spriteBatch.Draw(interactBoxTexture, interactToolBoxRectangle, Color.OrangeRed);
+                Game1.spriteBatch.Draw(interactBoxTexture, interactBoxRectangle, Color.Purple);
+
             }
         }
     }

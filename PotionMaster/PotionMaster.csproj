@@ -42,10 +42,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Character.cs" />
+    <Compile Include="Drawable.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Interactable.cs" />
     <Compile Include="Inventory.cs" />
+    <Compile Include="InventoryStack.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="LocationObject.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="PlayerCharacter.cs" />
     <Compile Include="Program.cs" />

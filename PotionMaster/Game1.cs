@@ -3,11 +3,16 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using MonoGame.Extended.Tiled;
+using MonoGame.Extended.Sprites;
+using MonoGame.Extended.Animations.SpriteSheets;
 using MonoGame.Extended.Tiled.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
 using MonoGame.Extended.BitmapFonts;
 using System;
+using System.Collections.Generic;
+using MonoGame.Extended.TextureAtlases;
+using MonoGame.Extended.Animations;
 
 namespace PotionMaster
 {
@@ -32,6 +37,23 @@ namespace PotionMaster
         public static BitmapFont font;
         public static int tileSize;
         public static Location currentLocation;
+        public static Inventory inventory;
+
+        public static SpriteSheetAnimationFactory CreateAnimationFactory(string textureName, string animationMapName)
+        {
+            var characterTexture = Game1.content.Load<Texture2D>(textureName);
+            var characterMap = Game1.content.Load<Dictionary<string, Rectangle>>(animationMapName);
+            var characterAtlas = new TextureAtlas("tempAtlas", characterTexture, characterMap);
+            return new SpriteSheetAnimationFactory(characterAtlas);
+        }
+
+        public static AnimatedSprite CreateSingleAnimatedSprite(string textureName, string animationMapName,
+            int[] frameIndicies, float frameDuration = 0.2F, bool isLooping = true, bool isReversed = false, bool isPingPong = false)
+        {
+            var factory = CreateAnimationFactory(textureName, animationMapName);
+            factory.Add("temp", new SpriteSheetAnimationData(frameIndicies, frameDuration, isLooping, isReversed, isPingPong));
+            return new AnimatedSprite(factory, "temp");
+        }
 
         public Game1()
         {
@@ -68,6 +90,7 @@ namespace PotionMaster
             playerboi = new PlayerCharacter();
             font = Content.Load<BitmapFont>("fonts/font1");
             currentLocation = new Location();
+            inventory = new Inventory();
         }
 
         /// <summary>
@@ -99,6 +122,7 @@ namespace PotionMaster
 
             currentLocation.Update();
             playerboi.Update();
+            inventory.Update();
             
             var oldPos = camera.Position;
             camera.LookAt(playerboi.GetPosition());
@@ -142,7 +166,9 @@ namespace PotionMaster
             // hud draw
             spriteBatch.Begin(samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
             currentLocation.DrawHud();
+            inventory.DrawHud();
             spriteBatch.End();
+
             base.Draw(gameTime);
         }
     }

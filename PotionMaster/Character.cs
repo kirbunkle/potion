@@ -14,26 +14,12 @@ namespace PotionMaster
 
     public class Character : Interactable
     {
-        private AnimatedSprite sprite;
         private SpriteSheetAnimationFactory spriteFactory;
         private string curSprite;
-        private Rectangle collisionBox;
-        protected int posX;
-        protected int posY;
         private float velocityX;
         private float velocityY;
 
-        protected Direction facingDirection;
-        
-
-        private Rectangle MakeCollisionBoundingBox(AnimatedSprite s)
-        {
-            return new Rectangle(
-                (Game1.tileSize / 8) - ((int)sprite.BoundingRectangle.Width / 2),
-                ((int)sprite.BoundingRectangle.Height / 2) + (Game1.tileSize / 8) - (int)sprite.BoundingRectangle.Width,
-                (int)sprite.BoundingRectangle.Width - ((Game1.tileSize / 8) * 2),
-                (int)sprite.BoundingRectangle.Width - ((Game1.tileSize / 8)));
-        }
+        protected Direction facingDirection;        
 
         public Character()
         {
@@ -41,10 +27,7 @@ namespace PotionMaster
             velocityY = 0;
             if (GetType() == typeof(PlayerCharacter))
             {
-                var characterTexture = Game1.content.Load<Texture2D>("spriteSheets/main2");
-                var characterMap = Game1.content.Load<Dictionary<string, Rectangle>>("animations/test1");
-                var characterAtlas = new TextureAtlas("test1", characterTexture, characterMap);
-                spriteFactory = new SpriteSheetAnimationFactory(characterAtlas);
+                spriteFactory = Game1.CreateAnimationFactory("spriteSheets/main2", "animations/test1");
 
                 spriteFactory.Add("down", new SpriteSheetAnimationData(new[] { 0, 1, 2, 1 }, isLooping: true));
                 spriteFactory.Add("left", new SpriteSheetAnimationData(new[] { 3, 4, 5, 4 }, isLooping: true));
@@ -64,10 +47,7 @@ namespace PotionMaster
             }
             else
             {
-                var characterTexture = Game1.content.Load<Texture2D>("spriteSheets/io1");
-                var characterMap = Game1.content.Load<Dictionary<string, Rectangle>>("animations/io1");
-                var characterAtlas = new TextureAtlas("io1", characterTexture, characterMap);
-                spriteFactory = new SpriteSheetAnimationFactory(characterAtlas);
+                spriteFactory = Game1.CreateAnimationFactory("spriteSheets/io1", "animations/io1");
                 spriteFactory.Add("down_idle", new SpriteSheetAnimationData(new[] { 0, 1, 2, 3, 4, 5, 6, 7 }, isLooping: true, frameDuration: 0.1f));
                 curSprite = "down_idle";
                 posX = 528;
@@ -82,20 +62,6 @@ namespace PotionMaster
         {
             posX += Game1.tileSize * 2;
             posY += Game1.tileSize * 2;
-        }
-
-        public Rectangle GetCollisionBox(int mx = 0, int my = 0)
-        {
-            return new Rectangle(
-                collisionBox.X + posX + mx, 
-                collisionBox.Y + posY + my, 
-                collisionBox.Width, 
-                collisionBox.Height);
-        }
-        
-        public Vector2 GetPosition()
-        {
-            return new Vector2(posX, posY);
         }
 
         public void Move(float mx, float my)
@@ -159,17 +125,6 @@ namespace PotionMaster
                 posY = posY + (int)velocityY;
                 velocityY %= 1;
             }
-        }
-
-        public void Update()
-        {
-            sprite.Position = GetPosition();
-            sprite.Update(Game1.gt);
-        }
-
-        public void Draw()
-        {
-            Game1.spriteBatch.Draw(sprite);
         }
     }
 }

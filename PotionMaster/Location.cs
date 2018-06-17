@@ -14,11 +14,13 @@ namespace PotionMaster
     {
         private TiledMap tileMap;
         private Character binch;
+        private LocationObject bag;
 
         public Location()
         {
             tileMap = Game1.content.Load<TiledMap>("tiledMaps/dumb_grass");
             binch = new Character();
+            bag = new LocationObject();
         }
 
         public Interactable GetCollidingObject(Rectangle box) // TODO: make generic for interactible types
@@ -27,12 +29,16 @@ namespace PotionMaster
             {
                 return binch;
             }
+            else if (bag.GetCollisionBox().Intersects(box))
+            {
+                return bag;
+            }
             return null;
         }
 
         public bool IsCollidingWithAnotherObject(Rectangle box)
         {
-            return binch.GetCollisionBox().Intersects(box);
+            return binch.GetCollisionBox().Intersects(box) || bag.GetCollisionBox().Intersects(box);
         }
 
         public bool IsCollidingAtPoint(int x, int y)
@@ -71,12 +77,14 @@ namespace PotionMaster
         {
             Game1.mapRenderer.Update(tileMap, Game1.gt);
             binch.Update();
+            bag.Update();
         }
 
         public void Draw()
         {
             Game1.mapRenderer.Draw(tileMap, Game1.camera.GetViewMatrix());
             binch.Draw();
+            bag.Draw();
         }
 
         public void DrawHud()
