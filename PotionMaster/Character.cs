@@ -60,8 +60,7 @@ namespace PotionMaster
 
         public override void Interact()
         {
-            posX += Game1.tileSize * 2;
-            posY += Game1.tileSize * 2;
+            Game1.gameDateTime.AdvanceDay();
         }
 
         public void Move(float mx, float my)

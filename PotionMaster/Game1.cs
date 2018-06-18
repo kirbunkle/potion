@@ -38,6 +38,7 @@ namespace PotionMaster
         public static int tileSize;
         public static Location currentLocation;
         public static Inventory inventory;
+        public static GameDateTime gameDateTime;
 
         public static SpriteSheetAnimationFactory CreateAnimationFactory(string textureName, string animationMapName)
         {
@@ -91,6 +92,7 @@ namespace PotionMaster
             font = Content.Load<BitmapFont>("fonts/font1");
             currentLocation = new Location();
             inventory = new Inventory();
+            gameDateTime = new GameDateTime();
         }
 
         /// <summary>
@@ -123,6 +125,7 @@ namespace PotionMaster
             currentLocation.Update();
             playerboi.Update();
             inventory.Update();
+            gameDateTime.Update();
             
             var oldPos = camera.Position;
             camera.LookAt(playerboi.GetPosition());
@@ -167,6 +170,7 @@ namespace PotionMaster
             spriteBatch.Begin(samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
             currentLocation.DrawHud();
             inventory.DrawHud();
+            gameDateTime.DrawHud();
             spriteBatch.End();
 
             base.Draw(gameTime);
