@@ -17,9 +17,9 @@ namespace PotionMaster
         {
             item = new Item();
             sprite = Game1.CreateSingleAnimatedSprite(item.SpriteName, item.AnimationName, item.AnimationFrames, isLooping: false);
-            posX = (int)(Game1.tileSize * 3.5);
-            posY = (int)(Game1.tileSize * 4.5);
-            collisionBox = MakeCollisionBoundingBox(sprite);
+            posX = Game1.tileSize * 4;
+            posY = Game1.tileSize * 5;
+            collisionBox = MakeCollisionBoundingBox();
         }
 
         public override void Interact()

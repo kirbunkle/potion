@@ -15,15 +15,46 @@ namespace PotionMaster
         private TiledMap tileMap;
         private Character binch;
         private LocationObject bag;
+        private List<Plant> plants;
+        //private string beefsauce;
+
+        private static readonly int[] plantableTiles = { 2, 3 };
+
+        // TODO probably need to make these (GetPlantAt) use a 2d map so we can locate by reference instead of doing a lengthy search
+
+        private Plant GetPlantAt(Rectangle box)
+        {
+            foreach (Plant p in plants)
+            {
+                if (p.GetCollisionBox().Intersects(box))
+                {
+                    return p;
+                }
+            }
+            return null;
+        }
+
+        private Plant GetPlantAt(int x, int y)
+        {
+            foreach (Plant p in plants)
+            {
+                if (p.GetCollisionBox().Contains(x, y))
+                {
+                    return p;
+                }
+            }
+            return null;
+        }
 
         public Location()
         {
             tileMap = Game1.content.Load<TiledMap>("tiledMaps/dumb_grass");
             binch = new Character();
             bag = new LocationObject();
+            plants = new List<Plant>();
         }
 
-        public Interactable GetCollidingObject(Rectangle box) // TODO: make generic for interactible types
+        public Interactable GetCollidingObject(Rectangle box) 
         {
             if (binch.GetCollisionBox().Intersects(box))
             {
@@ -33,7 +64,10 @@ namespace PotionMaster
             {
                 return bag;
             }
-            return null;
+            else
+            {
+                return GetPlantAt(box);
+            }
         }
 
         public bool IsCollidingWithAnotherObject(Rectangle box)
@@ -41,17 +75,24 @@ namespace PotionMaster
             return binch.GetCollisionBox().Intersects(box) || bag.GetCollisionBox().Intersects(box);
         }
 
-        public bool IsCollidingAtPoint(int x, int y)
+        public int GetTileTypeID(int x, int y)
         {
             int sampleX = x / Game1.tileSize;
             int sampleY = y / Game1.tileSize;
-            return (x < 0)
-                || (y < 0)
-                || (x > (tileMap.Width * Game1.tileSize))
-                || (y > (tileMap.Height * Game1.tileSize))
-                || (!tileMap.TileLayers[0].TryGetTile(sampleX, sampleY, out TiledMapTile? tile))
-                || (!tile.HasValue)
-                || (tile.Value.GlobalIdentifier == 0);
+            if ((tileMap.TileLayers[0].TryGetTile(sampleX, sampleY, out TiledMapTile? tile)) && tile.HasValue)
+            {
+                return tile.Value.GlobalIdentifier;
+            }
+            return -1;
+        }
+
+        public bool IsCollidingAtPoint(int x, int y)
+        {
+            return (x <= 0)
+                || (y <= 0)
+                || (x >= tileMap.WidthInPixels)
+                || (y >= tileMap.HeightInPixels)
+                || (GetTileTypeID(x, y) <= 0);
         }
 
         public bool IsColliding(Rectangle box)
@@ -73,11 +114,31 @@ namespace PotionMaster
             return tileMap.HeightInPixels;
         }
 
+        public bool PlantExistsAtPosition(int x, int y)
+        {
+            return GetPlantAt(x, y) != null;
+        }
+
+        public bool IsValidPlantableLocation(Rectangle loc)
+        {
+            Point p = loc.Center;
+            return (plantableTiles.Contains(GetTileTypeID(p.X, p.Y)) && !PlantExistsAtPosition(p.X, p.Y));
+        }
+
+        public void Plant(Rectangle loc, Item item)
+        {
+            plants.Add(new Plant(loc, item));
+        }
+
         public void Update()
         {
             Game1.mapRenderer.Update(tileMap, Game1.gt);
             binch.Update();
             bag.Update();
+            foreach (Plant p in plants)
+            {
+                p.Update();
+            }
         }
 
         public void Draw()
@@ -85,11 +146,15 @@ namespace PotionMaster
             Game1.mapRenderer.Draw(tileMap, Game1.camera.GetViewMatrix());
             binch.Draw();
             bag.Draw();
+            foreach (Plant p in plants)
+            {
+                p.Draw();
+            }
         }
 
         public void DrawHud()
         {
-            //Game1.spriteBatch.DrawString(Game1.font, beefsauce, new Vector2(10, 10), Color.AntiqueWhite);
+            //Game1.spriteBatch.DrawString(Game1.font, beefsauce, new Vector2(500, 10), Color.AntiqueWhite);
         }
     }
 }

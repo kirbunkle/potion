@@ -40,22 +40,22 @@ namespace PotionMaster
                 spriteFactory.Add("up_idle", new SpriteSheetAnimationData(new[] { 10 }, isLooping: false));
 
                 curSprite = "down_idle";
-                posX = 300;
-                posY = 300;
-                sprite = new AnimatedSprite(spriteFactory, curSprite);
-                collisionBox = MakeCollisionBoundingBox(sprite);
+                posX = Game1.tileSize * 10;
+                posY = Game1.tileSize * 10;
+                sprite = Game1.CreateAnimatedSprite(spriteFactory, curSprite);
+                collisionBox = MakeCollisionBoundingBox();
             }
             else
             {
                 spriteFactory = Game1.CreateAnimationFactory("spriteSheets/io1", "animations/io1");
                 spriteFactory.Add("down_idle", new SpriteSheetAnimationData(new[] { 0, 1, 2, 3, 4, 5, 6, 7 }, isLooping: true, frameDuration: 0.1f));
                 curSprite = "down_idle";
-                posX = 528;
-                posY = 272;
-                sprite = new AnimatedSprite(spriteFactory, curSprite);
+                posX = Game1.tileSize * 15;
+                posY = Game1.tileSize * 8;
+                sprite = Game1.CreateAnimatedSprite(spriteFactory, curSprite);
             }
             facingDirection = Direction.Down;
-            collisionBox = MakeCollisionBoundingBox(sprite);
+            collisionBox = MakeCollisionBoundingBox();
         }
 
         public override void Interact()
@@ -92,7 +92,7 @@ namespace PotionMaster
             }
 
             if (oldSprite != curSprite)
-                sprite = new AnimatedSprite(spriteFactory, curSprite);
+                sprite = Game1.CreateAnimatedSprite(spriteFactory, curSprite); //TODO should we just store this?
 
             velocityX += mx;
             velocityY += my;

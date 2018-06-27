@@ -41,12 +41,12 @@ namespace PotionMaster
 
         private Rectangle FindInteractToolBoxRectangle()
         {
-            return MakeInteractRectangle((posX / Game1.tileSize) * Game1.tileSize, (posY / Game1.tileSize) * Game1.tileSize);
+            return MakeInteractRectangle(((posX + (Game1.tileSize / 2)) / Game1.tileSize) * Game1.tileSize, ((posY + (Game1.tileSize / 2)) / Game1.tileSize) * Game1.tileSize);
         }
 
         private Rectangle FindInteractBoxRectangle()
         {
-            return MakeInteractRectangle(posX - (Game1.tileSize / 2), posY - (Game1.tileSize / 2));
+            return MakeInteractRectangle(posX, posY);
         }
 
         public PlayerCharacter()
@@ -58,23 +58,28 @@ namespace PotionMaster
             interactBoxRectangle = FindInteractBoxRectangle();
         }
 
+        public Rectangle GetToolRectangle()
+        {
+            return interactToolBoxRectangle;
+        }
+
         public new void Update()
         {
             float moveX = 0;
             float moveY = 0;
-            if (Game1.keyboardInput.IsKeyDown(Keys.Left)) // TODO: make a wrapper of the key inputs for configurable keys
+            if (Game1.input.ButtonDown(GameButtons.Left)) 
             {
                 moveX -= speed * Game1.dt;
             }
-            if (Game1.keyboardInput.IsKeyDown(Keys.Right))
+            if (Game1.input.ButtonDown(GameButtons.Right))
             {
                 moveX += speed * Game1.dt;
             }
-            if (Game1.keyboardInput.IsKeyDown(Keys.Up))
+            if (Game1.input.ButtonDown(GameButtons.Up))
             {
                 moveY -= speed * Game1.dt;
             }
-            if (Game1.keyboardInput.IsKeyDown(Keys.Down))
+            if (Game1.input.ButtonDown(GameButtons.Down))
             {
                 moveY += speed * Game1.dt;
             }
@@ -83,13 +88,25 @@ namespace PotionMaster
                 moveX *= 0.7f;
                 moveY *= 0.7f;
             }
-            if (Game1.keyboardInput.IsKeyDown(Keys.Space))
+            if (Game1.input.ButtonPressed(GameButtons.A))
             {
-                Interactable obj = Game1.currentLocation.GetCollidingObject(interactBoxRectangle);  
+                // interact
+                Interactable obj = Game1.currentLocation.GetCollidingObject(interactBoxRectangle);
                 if (obj != null)
                 {
                     obj.Interact();
                 }
+            }
+            else if (Game1.input.ButtonPressed(GameButtons.B))
+            {
+                // use item
+                Item i = Game1.inventory.GetCurrentItem();
+                if (i != null) i.Use();
+            }
+            else if (Game1.input.ButtonPressed(GameButtons.Tab))
+            {
+                // swap items
+                Game1.inventory.SwapItems(1);
             }
             Move(moveX, moveY);
             base.Update();
@@ -102,10 +119,12 @@ namespace PotionMaster
             base.Draw();
             if (drawToolInteractBox)
             {
-                Game1.spriteBatch.Draw(interactBoxTexture, GetCollisionBox(), Color.YellowGreen);
+                //Game1.spriteBatch.Draw(interactBoxTexture, GetCollisionBox(), Color.YellowGreen);
+                //Game1.spriteBatch.Draw(interactBoxTexture, 
+                //    new Rectangle((int)sprite.BoundingRectangle.X, (int)sprite.BoundingRectangle.Y, 
+                //    (int)sprite.BoundingRectangle.Width, (int)sprite.BoundingRectangle.Height), Color.Indigo);
                 Game1.spriteBatch.Draw(interactBoxTexture, interactToolBoxRectangle, Color.OrangeRed);
-                Game1.spriteBatch.Draw(interactBoxTexture, interactBoxRectangle, Color.Purple);
-
+                //Game1.spriteBatch.Draw(interactBoxTexture, interactBoxRectangle, Color.Purple);
             }
         }
     }

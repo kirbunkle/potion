@@ -25,10 +25,21 @@ namespace PotionMaster
             return new Vector2(posX, posY);
         }
 
+        public Vector2 GetCenter()
+        {
+            return new Vector2(posX + (sprite.BoundingRectangle.Width * 0.5f), posY + (sprite.BoundingRectangle.Height * 0.5f));
+        }
+
         public void SetPosition(int x, int y)
         {
             posX = x;
             posY = y;
+        }
+
+        public void SetPosition(Vector2 v)
+        {
+            posX = (int)v.X;
+            posY = (int)v.Y;
         }
         
         public void Update()

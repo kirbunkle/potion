@@ -21,12 +21,9 @@ namespace PotionMaster
     /// </summary>
     public class Game1 : Game
     {
-        private PlayerCharacter playerboi;
-
         // global variables
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
-        public static KeyboardState keyboardInput;
         public static int dt; // deltatime
         public static GameTime gt;
         public static ContentManager content;
@@ -39,6 +36,29 @@ namespace PotionMaster
         public static Location currentLocation;
         public static Inventory inventory;
         public static GameDateTime gameDateTime;
+        public static float zoom;
+        public static GameInput input;
+        public static PlayerCharacter playerCharacter;
+
+        private float zoomCameraOffsetX;
+        private float zoomCameraOffsetY;
+
+        public static Vector2 CreatePositionWithSpriteOffset(Vector2 v)
+        {
+            return new Vector2(v.X + (Game1.tileSize * 0.5f), v.Y + (Game1.tileSize * 0.5f));
+        }
+
+        public static Vector2 CreatePositionWithSpriteOffset(Rectangle r)
+        {
+            return new Vector2(r.X + (r.Width * 0.5f), r.Y + (r.Height * 0.5f));
+        }
+
+        public static AnimatedSprite CreateAnimatedSprite(SpriteSheetAnimationFactory factory, string name)
+        {
+            AnimatedSprite a = new AnimatedSprite(factory, name);
+            a.Origin = new Vector2(0, 0);
+            return a;
+        }
 
         public static SpriteSheetAnimationFactory CreateAnimationFactory(string textureName, string animationMapName)
         {
@@ -53,7 +73,7 @@ namespace PotionMaster
         {
             var factory = CreateAnimationFactory(textureName, animationMapName);
             factory.Add("temp", new SpriteSheetAnimationData(frameIndicies, frameDuration, isLooping, isReversed, isPingPong));
-            return new AnimatedSprite(factory, "temp");
+            return CreateAnimatedSprite(factory, "temp");
         }
 
         public Game1()
@@ -81,18 +101,30 @@ namespace PotionMaster
         {
             mapRenderer = new TiledMapRenderer(GraphicsDevice);
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            screenW = 800;
-            screenH = 480;
-            camera = new Camera2D(new BoxingViewportAdapter(Window, GraphicsDevice, screenW, screenH));
-            //camera.Zoom = 2;
+
             tileSize = 32;
 
+            screenW = 1280;
+            screenH = 720;
+            Game1.graphics.PreferredBackBufferWidth = screenW;
+            Game1.graphics.PreferredBackBufferHeight = screenH;
+            Game1.graphics.ApplyChanges();
+
+            camera = new Camera2D(new BoxingViewportAdapter(Window, GraphicsDevice, screenW, screenH));
+
+            zoom = 2;
+            camera.Zoom = zoom;
+            
+            zoomCameraOffsetX = (screenW - (screenW / zoom)) / 2;
+            zoomCameraOffsetY = (screenH - (screenH / zoom)) / 2;
+
             content = Content;
-            playerboi = new PlayerCharacter();
+            playerCharacter = new PlayerCharacter();
             font = Content.Load<BitmapFont>("fonts/font1");
             currentLocation = new Location();
             inventory = new Inventory();
             gameDateTime = new GameDateTime();
+            input = new GameInput();
         }
 
         /// <summary>
@@ -114,21 +146,21 @@ namespace PotionMaster
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            keyboardInput = Keyboard.GetState();
+            input.SetKeyboardState(Keyboard.GetState());
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || keyboardInput.IsKeyDown(Keys.Escape))
+            if (input.ButtonPressed(GameButtons.Esc))
                 Exit();
 
             dt = gameTime.ElapsedGameTime.Milliseconds;
             gt = gameTime;
 
             currentLocation.Update();
-            playerboi.Update();
+            playerCharacter.Update();
             inventory.Update();
             gameDateTime.Update();
             
             var oldPos = camera.Position;
-            camera.LookAt(playerboi.GetPosition());
+            camera.LookAt(playerCharacter.GetCenter());
             float diffX = Math.Abs(camera.Position.X - oldPos.X);
             float diffY = Math.Abs(camera.Position.Y - oldPos.Y);
             if ((diffX > 0.50) || (diffY > 0.50))
@@ -139,14 +171,14 @@ namespace PotionMaster
                 camera.Position = oldPos;
             }
             oldPos = camera.Position;
-            if (oldPos.X < 0)
-                oldPos.X = 0;
-            if (oldPos.X > (currentLocation.WidthInPixels() - screenW))
-                oldPos.X = currentLocation.WidthInPixels() - screenW;
-            if (oldPos.Y < 0)
-                oldPos.Y = 0;
-            if (oldPos.Y > (currentLocation.HeightInPixels() - screenH))
-                oldPos.Y = currentLocation.HeightInPixels() - screenH;
+            if (oldPos.X < -zoomCameraOffsetX)
+                oldPos.X = -zoomCameraOffsetX;
+            if (oldPos.X > ((currentLocation.WidthInPixels() + zoomCameraOffsetX) - screenW))
+                oldPos.X = (currentLocation.WidthInPixels() + zoomCameraOffsetX) - screenW;
+            if (oldPos.Y < -zoomCameraOffsetY)
+                oldPos.Y = -zoomCameraOffsetY;
+            if (oldPos.Y > ((currentLocation.HeightInPixels() + zoomCameraOffsetY) - screenH))
+                oldPos.Y = (currentLocation.HeightInPixels() + zoomCameraOffsetY) - screenH;
             camera.Position = oldPos;
             //camera.ZoomIn(camera.Zoom*dt*0.01f);
             base.Update(gameTime);
@@ -163,7 +195,7 @@ namespace PotionMaster
             // camera draw
             spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
             currentLocation.Draw();
-            playerboi.Draw();
+            playerCharacter.Draw();
             spriteBatch.End();
 
             // hud draw

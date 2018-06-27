@@ -11,17 +11,20 @@ namespace PotionMaster
     public class GameDateTime
     {
         private float counter;
+
         private static readonly float millisecondsToAdvanceMinute = 2000;
         private static readonly int daysInMonth = 28;
         private static readonly int seasonsInYear = 4;
+        public static readonly string[] DaysOfWeek = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+        public static readonly string[] Seasons = { "Winter", "Spring", "Summer", "Fall" };
+
         public int Minute { get; set; }
         public int Hour { get; set; }
         public int Date { get; set; }
         public int Season { get; set; }
         public int Year { get; set; }
+        public int DaysSinceStart { get; set; }
         public string AMPM { get; set; }
-        public static readonly string[] DaysOfWeek = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
-        public static readonly string[] Seasons = { "Winter", "Spring", "Summer", "Fall" };
 
         public GameDateTime()
         {
@@ -32,6 +35,7 @@ namespace PotionMaster
             Season = 1;
             Year = 1;
             AMPM = "AM";
+            DaysSinceStart = Date + ((Season - 1) * daysInMonth) + ((Year - 1) * daysInMonth * seasonsInYear);
         }
 
         public string GetCurrentMinute()
@@ -73,6 +77,7 @@ namespace PotionMaster
         public void AdvanceDay()
         {
             Date += 1;
+            DaysSinceStart += 1;
             if (Date > daysInMonth)
             {
                 AdvanceSeason();
