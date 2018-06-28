@@ -50,6 +50,9 @@
     <Compile Include="Inventory.cs" />
     <Compile Include="InventoryStack.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="ItemManager.cs" />
+    <Compile Include="ItemTypes\Potion.cs" />
+    <Compile Include="ItemTypes\Seed.cs" />
     <Compile Include="LocationObject.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Plant.cs" />
@@ -81,11 +84,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\animations\fireplant.xml" />
+    <Content Include="Content\animations\firepot.xml" />
     <Content Include="Content\animations\test1.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\animations\io1.xml" />
     <Content Include="Icon.ico" />
+    <Content Include="Content\items\itemData.xml" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />

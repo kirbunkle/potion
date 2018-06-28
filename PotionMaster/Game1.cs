@@ -39,6 +39,7 @@ namespace PotionMaster
         public static float zoom;
         public static GameInput input;
         public static PlayerCharacter playerCharacter;
+        public static ItemManager itemManager;
 
         private float zoomCameraOffsetX;
         private float zoomCameraOffsetY;
@@ -119,6 +120,8 @@ namespace PotionMaster
             zoomCameraOffsetY = (screenH - (screenH / zoom)) / 2;
 
             content = Content;
+            itemManager = new ItemManager();
+
             playerCharacter = new PlayerCharacter();
             font = Content.Load<BitmapFont>("fonts/font1");
             currentLocation = new Location();

@@ -6,32 +6,47 @@ using System.Threading.Tasks;
 
 namespace PotionMaster
 {
-    public class Item
+
+    public abstract class Item
     {
-        public string Name { get; }
-        public string SpriteName { get; }
-        public string AnimationName { get; }
-        public int[] AnimationFrames { get; }
-        public int[] PlantAnimationFrames { get; }
-        public int[] PlantSchedule { get; }
+        protected string name;
+        protected string spriteName;
+        protected string animationName;
+        protected int[] animationFrames;
 
-        public Item()
+        public Item(List<string> data)
         {
-            Name = "Ifir Blossom Seed";
-            SpriteName = "spriteSheets/plants/fireplant";
-            AnimationName = "animations/fireplant";
-            AnimationFrames = new int[] { 5 };
-            PlantAnimationFrames = new int[] { 0, 1, 2, 3, 4 };
-            PlantSchedule = new int[] { 0, 1, 3, 5, 6 };
-        }
-
-        public void Use()
-        {
-            if (Game1.currentLocation.IsValidPlantableLocation(Game1.playerCharacter.GetToolRectangle()))
+            name = data[1];
+            spriteName = data[2];
+            animationName = data[3];
+            var indexes = data[4].Split(',');
+            animationFrames = new int[indexes.Count()];
+            for (int i = 0; i < indexes.Count(); i++)
             {
-                Game1.currentLocation.Plant(Game1.playerCharacter.GetToolRectangle(), this);
-                Game1.inventory.DecrementItem(this);
+                animationFrames[i] = Int32.Parse(indexes[i]);
             }
         }
+
+        public string Name()
+        {
+            return name;
+        }
+
+        public string SpriteName()
+        {
+            return spriteName;
+        }
+
+        public string AnimationName()
+        {
+            return animationName;
+        }
+
+        public int[] AnimationFrames()
+        {
+            return animationFrames;
+        }
+
+        public abstract void Use();
     }
 }

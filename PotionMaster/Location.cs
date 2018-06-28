@@ -50,7 +50,7 @@ namespace PotionMaster
         {
             tileMap = Game1.content.Load<TiledMap>("tiledMaps/dumb_grass");
             binch = new Character();
-            bag = new LocationObject();
+            bag = new LocationObject(Game1.itemManager.GetItem(1));
             plants = new List<Plant>();
         }
 
@@ -125,9 +125,14 @@ namespace PotionMaster
             return (plantableTiles.Contains(GetTileTypeID(p.X, p.Y)) && !PlantExistsAtPosition(p.X, p.Y));
         }
 
-        public void Plant(Rectangle loc, Item item)
+        public void Plant(Rectangle loc, Seed seed)
         {
-            plants.Add(new Plant(loc, item));
+            plants.Add(new Plant(loc, seed, this));
+        }
+
+        public void Harvest(Plant plant)
+        {
+            plants.Remove(plant);
         }
 
         public void Update()

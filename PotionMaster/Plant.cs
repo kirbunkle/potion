@@ -17,6 +17,8 @@ namespace PotionMaster
         private int[] plantSchedule;
         private int datePlanted;
         private int curDate;
+        private Location myLocation;
+        private int cropYield;
 
         private void CheckForPlantGrowth() 
         {
@@ -39,17 +41,18 @@ namespace PotionMaster
             }
         }
 
-        public Plant(Rectangle loc, Item item)
+        public Plant(Rectangle pos, Seed seed, Location location)
         {
-            posX = loc.X;
-            posY = loc.Y;
-            spriteFactory = Game1.CreateAnimationFactory(item.SpriteName, item.AnimationName);
-            plantAnimationFrames = item.PlantAnimationFrames;
-            plantSchedule = item.PlantSchedule;
+            posX = pos.X;
+            posY = pos.Y;
+            myLocation = location;
+            spriteFactory = Game1.CreateAnimationFactory(seed.SpriteName(), seed.AnimationName());
+            plantAnimationFrames = seed.PlantAnimationFrames();
+            plantSchedule = seed.PlantSchedule();
 
             if (plantAnimationFrames.Count() != plantSchedule.Count())
             {
-                throw new Exception(item.Name + " item has mismatching animation frames and schedule");
+                throw new Exception(seed.Name() + " item has mismatching animation frames and schedule");
             }
 
             for (int i = 0; i < plantAnimationFrames.Count(); i++)
@@ -61,11 +64,21 @@ namespace PotionMaster
             sprite = Game1.CreateAnimatedSprite(spriteFactory, curSprite.ToString());
             collisionBox = MakeCollisionBoundingBox();
             datePlanted = Game1.gameDateTime.DaysSinceStart;
+            cropYield = seed.CropYield();
+        }
+
+        public bool ReadyToHarvest()
+        {
+            return plantSchedule.Last() <= (curDate - datePlanted);
         }
 
         public override void Interact()
         {
-
+            if (ReadyToHarvest())
+            {
+                myLocation.Harvest(this);
+                Game1.inventory.AddItem(cropYield);
+            }
         }
 
         public new void Update()

@@ -17,7 +17,7 @@ namespace PotionMaster
             Item = i;
             posX = x;
             posY = y;
-            sprite = Game1.CreateSingleAnimatedSprite(Item.SpriteName, Item.AnimationName, Item.AnimationFrames, isLooping: false);
+            sprite = Game1.CreateSingleAnimatedSprite(Item.SpriteName(), Item.AnimationName(), Item.AnimationFrames(), isLooping: false);
             Count = 1;
         }
     }

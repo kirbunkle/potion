@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="System.Collections.Generic.Dictionary[int, System.Collections.Generic.List[System.String]]">
+    <Item>
+      <Key>1</Key>
+      <Value>
+        <Item>Type=Seed</Item>
+        <Item>Ifir Blossom Seed</Item>
+        <Item>spriteSheets/plants/fireplant</Item>
+        <Item>animations/fireplant</Item>
+        <Item>5</Item>
+        <Item>0,1,2,3,4</Item>
+        <Item>0,1,3,5,6</Item>
+        <Item>2</Item>
+      </Value>
+    </Item>
+    <Item>
+      <Key>2</Key>
+      <Value>
+        <Item>Type=Potion</Item>
+        <Item>Fire Water</Item>
+        <Item>spriteSheets/potions/firepot</Item>
+        <Item>animations/firepot</Item>
+        <Item>0</Item>
+      </Value>
+    </Item>
+  </Asset>
+</XnaContent>

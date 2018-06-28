@@ -13,10 +13,10 @@ namespace PotionMaster
     {
         private Item item;
         
-        public LocationObject()
+        public LocationObject(Item i)
         {
-            item = new Item();
-            sprite = Game1.CreateSingleAnimatedSprite(item.SpriteName, item.AnimationName, item.AnimationFrames, isLooping: false);
+            item = i;
+            sprite = Game1.CreateSingleAnimatedSprite(item.SpriteName(), item.AnimationName(), item.AnimationFrames(), isLooping: false);
             posX = Game1.tileSize * 4;
             posY = Game1.tileSize * 5;
             collisionBox = MakeCollisionBoundingBox();

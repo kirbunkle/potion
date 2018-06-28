@@ -16,6 +16,7 @@ namespace PotionMaster
         private int currentItem;
         private Texture2D selectBoxTexture;
         private Rectangle selectBoxRectangle;
+        private Vector2 selectedItemNamePosition;
 
         private void DeleteItem(int pos)
         {
@@ -28,6 +29,7 @@ namespace PotionMaster
             currentItem = -1;
             selectBoxTexture = Game1.content.Load<Texture2D>("spriteSheets/simplebox");
             selectBoxRectangle = new Rectangle();
+            selectedItemNamePosition = new Vector2(Game1.tileSize, Game1.screenH - (Game1.tileSize * 2));
         }
 
         public void AddItem(Item i)
@@ -47,6 +49,11 @@ namespace PotionMaster
             }
         }
 
+        public void AddItem(int i)
+        {
+            AddItem(Game1.itemManager.GetItem(i));
+        }
+
         public void DecrementItem(Item item)
         {
             if (items.Count() <= 0) return;
@@ -56,14 +63,18 @@ namespace PotionMaster
                 if (items[i].Item == item)
                 {
                     items[i].Count--;
-                    if (items[i].Count <= 0) items.RemoveAt(i);
+                    if (items[i].Count <= 0)
+                    {
+                        items.RemoveAt(i);
+                        if (items.Count <= 0) currentItem = -1;
+                        else currentItem %= items.Count;
+                    }
                     break;
                 }
                 i++;
                 if (i >= items.Count()) i = 0;
             }
             while (i != currentItem);
-            if (items.Count <= 0) currentItem = -1;
         }
 
         public Item GetCurrentItem()
@@ -103,7 +114,10 @@ namespace PotionMaster
         public void DrawHud()
         {
             if (currentItem >= 0)
+            {
                 Game1.spriteBatch.Draw(selectBoxTexture, selectBoxRectangle, Color.Coral);
+                Game1.spriteBatch.DrawString(Game1.font, items[currentItem].Item.Name(), selectedItemNamePosition, Color.Turquoise);
+            }
             foreach (InventoryStack i in items)
             {
                 i.Draw();
