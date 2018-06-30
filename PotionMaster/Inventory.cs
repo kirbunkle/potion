@@ -30,28 +30,30 @@ namespace PotionMaster
             selectBoxTexture = Game1.content.Load<Texture2D>("spriteSheets/simplebox");
             selectBoxRectangle = new Rectangle();
             selectedItemNamePosition = new Vector2(Game1.tileSize, Game1.screenH - (Game1.tileSize * 2));
+            AddItem(2, 1000);
         }
 
-        public void AddItem(Item i)
+        public void AddItem(Item i, int num = 1)
         {
             foreach (InventoryStack s in items)
             {
                 if (i == s.Item)
                 {
-                    s.Count += 1;
+                    s.Count += num;
                     return;
                 }
             }
-            items.Add(new InventoryStack(i));
+            items.Add(new InventoryStack(i, count: num));
+
             if (currentItem < 0)
             {
                 currentItem = 0;
             }
         }
 
-        public void AddItem(int i)
+        public void AddItem(int i, int num = 1)
         {
-            AddItem(Game1.itemManager.GetItem(i));
+            AddItem(Game1.itemManager.GetItem(i), num);
         }
 
         public void DecrementItem(Item item)

@@ -12,13 +12,13 @@ namespace PotionMaster
         public Item Item { get; }
         public int Count { get; set; }
 
-        public InventoryStack(Item i, int x = 0, int y = 0)
+        public InventoryStack(Item i, int x = 0, int y = 0, int count = 1)
         {
             Item = i;
             posX = x;
             posY = y;
             sprite = Game1.CreateSingleAnimatedSprite(Item.SpriteName(), Item.AnimationName(), Item.AnimationFrames(), isLooping: false);
-            Count = 1;
+            Count = count;
         }
     }
 }

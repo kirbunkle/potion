@@ -14,8 +14,10 @@ namespace PotionMaster
     {
         private TiledMap tileMap;
         private Character binch;
+        private Enemy spoder;
         private LocationObject bag;
         private List<Plant> plants;
+        private List<Projectile> projectiles;
         //private string beefsauce;
 
         private static readonly int[] plantableTiles = { 2, 3 };
@@ -51,7 +53,9 @@ namespace PotionMaster
             tileMap = Game1.content.Load<TiledMap>("tiledMaps/dumb_grass");
             binch = new Character();
             bag = new LocationObject(Game1.itemManager.GetItem(1));
+            spoder = new Enemy();
             plants = new List<Plant>();
+            projectiles = new List<Projectile>();
         }
 
         public Interactable GetCollidingObject(Rectangle box) 
@@ -63,6 +67,10 @@ namespace PotionMaster
             else if (bag.GetCollisionBox().Intersects(box))
             {
                 return bag;
+            }
+            else if ((spoder.Active) && (spoder.GetCollisionBox().Intersects(box)))
+            {
+                return spoder;
             }
             else
             {
@@ -104,6 +112,14 @@ namespace PotionMaster
                 || IsCollidingWithAnotherObject(box);
         }
 
+        public bool IsCollidingWithImpassibleTile(Rectangle box)
+        {
+            return IsCollidingAtPoint(box.X, box.Y)
+                || IsCollidingAtPoint(box.X + box.Width, box.Y)
+                || IsCollidingAtPoint(box.X, box.Y + box.Height)
+                || IsCollidingAtPoint(box.X + box.Width, box.Y + box.Height);
+        }
+
         public int WidthInPixels()
         {
             return tileMap.WidthInPixels;
@@ -135,14 +151,33 @@ namespace PotionMaster
             plants.Remove(plant);
         }
 
+        public void AddProjectile(Projectile p)
+        {
+            projectiles.Add(p);
+        }
+
+        public void RemoveProjectile(Projectile p)
+        {
+            projectiles.Remove(p);
+        }
+
         public void Update()
         {
             Game1.mapRenderer.Update(tileMap, Game1.gt);
             binch.Update();
             bag.Update();
+            if (spoder.Active) spoder.Update();
             foreach (Plant p in plants)
             {
                 p.Update();
+            }
+            for (int i = projectiles.Count-1; i >= 0; i--)
+            {
+                Projectile p = projectiles[i];
+                if (p.Active)
+                    p.Update();
+                else
+                    projectiles.Remove(p);
             }
         }
 
@@ -151,7 +186,12 @@ namespace PotionMaster
             Game1.mapRenderer.Draw(tileMap, Game1.camera.GetViewMatrix());
             binch.Draw();
             bag.Draw();
+            if (spoder.Active) spoder.Draw();
             foreach (Plant p in plants)
+            {
+                p.Draw();
+            }
+            foreach (Projectile p in projectiles)
             {
                 p.Draw();
             }

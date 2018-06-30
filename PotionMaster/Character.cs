@@ -45,6 +45,15 @@ namespace PotionMaster
                 sprite = Game1.CreateAnimatedSprite(spriteFactory, curSprite);
                 collisionBox = MakeCollisionBoundingBox();
             }
+            else if (GetType() == typeof(Enemy))
+            {
+                spriteFactory = Game1.CreateAnimationFactory("spriteSheets/enemies/spider", "animations/spider");
+                spriteFactory.Add("down_idle", new SpriteSheetAnimationData(new[] { 0, 1, 2, 3 }, isLooping: true, frameDuration: 0.2f));
+                curSprite = "down_idle";
+                posX = Game1.tileSize * 20;
+                posY = Game1.tileSize * 13;
+                sprite = Game1.CreateAnimatedSprite(spriteFactory, curSprite);
+            }
             else
             {
                 spriteFactory = Game1.CreateAnimationFactory("spriteSheets/io1", "animations/io1");
@@ -61,6 +70,16 @@ namespace PotionMaster
         public override void Interact()
         {
             Game1.gameDateTime.AdvanceDay();
+        }
+
+        public Vector2 Velocity()
+        {
+            return new Vector2(velocityX, velocityY);
+        }
+
+        public Direction FacingDirection()
+        {
+            return facingDirection;
         }
 
         public void Move(float mx, float my)

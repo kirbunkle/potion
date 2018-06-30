@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="System.Collections.Generic.Dictionary[System.String, Microsoft.Xna.Framework.Rectangle]">
+    <Item>
+      <Key>spider_000.png</Key>
+      <Value>0 0 32 32</Value>
+    </Item>
+    <Item>
+      <Key>spider_001.png</Key>
+      <Value>32 0 32 32</Value>
+    </Item>
+    <Item>
+      <Key>spider_002.png</Key>
+      <Value>0 32 32 32</Value>
+    </Item>
+    <Item>
+      <Key>spider_003.png</Key>
+      <Value>32 32 32 32</Value>
+    </Item>
+  </Asset>
+</XnaContent>
