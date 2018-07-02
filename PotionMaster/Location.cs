@@ -51,9 +51,9 @@ namespace PotionMaster
         public Location()
         {
             tileMap = Game1.content.Load<TiledMap>("tiledMaps/dumb_grass");
-            binch = new Character();
-            bag = new LocationObject(Game1.itemManager.GetItem(1));
-            spoder = new Enemy();
+            binch = Game1.dataManager.CreateCharacter(2, Game1.tileSize * 15, Game1.tileSize * 8);
+            bag = new LocationObject(Game1.dataManager.GetItem(1));
+            spoder = (Enemy)Game1.dataManager.CreateCharacter(3, Game1.tileSize * 20, Game1.tileSize * 13);
             plants = new List<Plant>();
             projectiles = new List<Projectile>();
         }

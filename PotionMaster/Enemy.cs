@@ -10,7 +10,7 @@ namespace PotionMaster
     {
         public bool Active { get; set; }
 
-        public Enemy() : base() //number one
+        public Enemy(List<string> data, int x, int y) : base(data, x, y) //number one
         {
             Active = true;
         }        

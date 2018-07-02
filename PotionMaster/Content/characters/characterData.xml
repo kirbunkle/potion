@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="System.Collections.Generic.Dictionary[int, System.Collections.Generic.List[System.String]]">
+    <Item>
+      <Key>1</Key>
+      <Value>
+        <Item>Type=PlayerCharacter</Item>
+        <Item>Player</Item>
+        <Item>spriteSheets/main2</Item>
+        <Item>animations/test1</Item>
+        <Item>0.2</Item>
+        <Item>down_idle,1</Item>
+        <Item>left_idle,4</Item>
+        <Item>right_idle,7</Item>
+        <Item>up_idle,10</Item>
+        <Item>down,0,1,2,1</Item>
+        <Item>left,3,4,5,4</Item>
+        <Item>right,6,7,8,7</Item>
+        <Item>up,9,10,11,10</Item>
+      </Value>
+    </Item>
+    <Item>
+      <Key>2</Key>
+      <Value>
+        <Item>Type=Character</Item>
+        <Item>Lil Binch</Item>
+        <Item>spriteSheets/io1</Item>
+        <Item>animations/io1</Item>
+        <Item>0.1</Item>
+        <Item>down_idle,0,1,2,3,4,5,6,7</Item>
+      </Value>
+    </Item>
+    <Item>
+      <Key>3</Key>
+      <Value>
+        <Item>Type=Enemy</Item>
+        <Item>White Cave Spider</Item>
+        <Item>spriteSheets/enemies/spider</Item>
+        <Item>animations/spider</Item>
+        <Item>0.2</Item>
+        <Item>down_idle,0,1,2,3</Item>
+      </Value>
+    </Item>
+  </Asset>
+</XnaContent>

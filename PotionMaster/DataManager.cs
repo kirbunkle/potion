@@ -1,0 +1,68 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PotionMaster
+{
+    public class DataManager
+    {
+        private Dictionary<int, Item> items;
+        private Dictionary<int, List<string>> itemData;
+        private Dictionary<int, List<string>> characterData;
+
+        private Item CreateItem(int i)
+        {
+            if (itemData.TryGetValue(i, out List<string> data))
+            {
+                if (data[0] == "Type=Seed")
+                {
+                    return new Seed(data);
+                }
+                else if (data[0] == "Type=Potion")
+                {
+                    return new Potion(data);
+                }
+            }
+            return null;
+        }
+
+        public DataManager()
+        {
+            items = new Dictionary<int, Item>();
+            itemData = Game1.content.Load<Dictionary<int, List<string>>>("items/itemData");
+            characterData = Game1.content.Load<Dictionary<int, List<string>>>("characters/characterData");
+        }
+
+        public Item GetItem(int id)
+        {
+            if (!items.TryGetValue(id, out Item item))
+            {
+                item = CreateItem(id);
+                if (item != null) items.Add(id, item);
+            }
+            return item;
+        }
+
+        public Character CreateCharacter(int id, int x, int y)
+        {
+            if (characterData.TryGetValue(id, out List<string> data))
+            {
+                if (data[0] == "Type=PlayerCharacter")
+                {
+                    return new PlayerCharacter(data, x, y);
+                }
+                else if (data[0] == "Type=Character")
+                {
+                    return new Character(data, x, y);
+                }
+                else if (data[0] == "Type=Enemy")
+                {
+                    return new Enemy(data, x, y);
+                }
+            }
+            return null;
+        }
+    }
+}

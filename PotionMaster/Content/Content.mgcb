@@ -150,3 +150,8 @@
 /processorParam:TextureFormat=Color
 /build:spriteSheets/enemies/spider.png
 
+#begin characters/characterData.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:characters/characterData.xml
+

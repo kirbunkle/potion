@@ -53,7 +53,7 @@ namespace PotionMaster
 
         public void AddItem(int i, int num = 1)
         {
-            AddItem(Game1.itemManager.GetItem(i), num);
+            AddItem(Game1.dataManager.GetItem(i), num);
         }
 
         public void DecrementItem(Item item)

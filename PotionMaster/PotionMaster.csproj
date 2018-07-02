@@ -52,7 +52,7 @@
     <Compile Include="Inventory.cs" />
     <Compile Include="InventoryStack.cs" />
     <Compile Include="Item.cs" />
-    <Compile Include="ItemManager.cs" />
+    <Compile Include="DataManager.cs" />
     <Compile Include="ItemTypes\Potion.cs" />
     <Compile Include="ItemTypes\Seed.cs" />
     <Compile Include="LocationObject.cs" />
@@ -95,6 +95,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\animations\io1.xml" />
+    <Content Include="Content\characters\characterData.xml" />
     <Content Include="Icon.ico" />
     <Content Include="Content\items\itemData.xml">
       <SubType>Designer</SubType>

@@ -49,7 +49,7 @@ namespace PotionMaster
             return MakeInteractRectangle(posX, posY);
         }
 
-        public PlayerCharacter()
+        public PlayerCharacter(List<string> data, int x, int y) : base(data, x, y)
         {
             speed = 0.15f;
             drawToolInteractBox = true;

@@ -7,6 +7,7 @@ using MonoGame.Extended.TextureAtlases;
 using MonoGame.Extended.Animations.SpriteSheets;
 using MonoGame.Extended.Sprites;
 using MonoGame.Extended.BitmapFonts;
+using System.Linq;
 
 namespace PotionMaster
 {
@@ -21,50 +22,31 @@ namespace PotionMaster
 
         protected Direction facingDirection;        
 
-        public Character()
+        public Character(List<string> data, int x, int y)
         {
             velocityX = 0;
             velocityY = 0;
-            if (GetType() == typeof(PlayerCharacter))
-            {
-                spriteFactory = Game1.CreateAnimationFactory("spriteSheets/main2", "animations/test1");
 
-                spriteFactory.Add("down", new SpriteSheetAnimationData(new[] { 0, 1, 2, 1 }, isLooping: true));
-                spriteFactory.Add("left", new SpriteSheetAnimationData(new[] { 3, 4, 5, 4 }, isLooping: true));
-                spriteFactory.Add("right", new SpriteSheetAnimationData(new[] { 6, 7, 8, 7 }, isLooping: true));
-                spriteFactory.Add("up", new SpriteSheetAnimationData(new[] { 9, 10, 11, 10 }, isLooping: true));
+            curSprite = "";
 
-                spriteFactory.Add("down_idle", new SpriteSheetAnimationData(new[] { 1 }, isLooping: false));
-                spriteFactory.Add("left_idle", new SpriteSheetAnimationData(new[] { 4 }, isLooping: false));
-                spriteFactory.Add("right_idle", new SpriteSheetAnimationData(new[] { 7 }, isLooping: false));
-                spriteFactory.Add("up_idle", new SpriteSheetAnimationData(new[] { 10 }, isLooping: false));
-
-                curSprite = "down_idle";
-                posX = Game1.tileSize * 10;
-                posY = Game1.tileSize * 10;
-                sprite = Game1.CreateAnimatedSprite(spriteFactory, curSprite);
-                collisionBox = MakeCollisionBoundingBox();
-            }
-            else if (GetType() == typeof(Enemy))
+            spriteFactory = Game1.CreateAnimationFactory(data[2], data[3]);
+            float frameDuration = float.Parse(data[4]);
+            for (int i = 5; i < data.Count; i++)
             {
-                spriteFactory = Game1.CreateAnimationFactory("spriteSheets/enemies/spider", "animations/spider");
-                spriteFactory.Add("down_idle", new SpriteSheetAnimationData(new[] { 0, 1, 2, 3 }, isLooping: true, frameDuration: 0.2f));
-                curSprite = "down_idle";
-                posX = Game1.tileSize * 20;
-                posY = Game1.tileSize * 13;
-                sprite = Game1.CreateAnimatedSprite(spriteFactory, curSprite);
+                var indexes = data[i].Split(',');
+                int[] animationFrames = new int[indexes.Count()-1];
+                for (int j = 0; j < indexes.Count() - 1; j++)
+                {
+                    animationFrames[j] = Int32.Parse(indexes[j+1]);
+                }
+                spriteFactory.Add(indexes[0], new SpriteSheetAnimationData(animationFrames, frameDuration, (animationFrames.Count() > 1)));
             }
-            else
-            {
-                spriteFactory = Game1.CreateAnimationFactory("spriteSheets/io1", "animations/io1");
-                spriteFactory.Add("down_idle", new SpriteSheetAnimationData(new[] { 0, 1, 2, 3, 4, 5, 6, 7 }, isLooping: true, frameDuration: 0.1f));
-                curSprite = "down_idle";
-                posX = Game1.tileSize * 15;
-                posY = Game1.tileSize * 8;
-                sprite = Game1.CreateAnimatedSprite(spriteFactory, curSprite);
-            }
+            curSprite = "down_idle";
             facingDirection = Direction.Down;
+            sprite = Game1.CreateAnimatedSprite(spriteFactory, curSprite);
             collisionBox = MakeCollisionBoundingBox();
+            posX = x;
+            posY = y;
         }
 
         public override void Interact()

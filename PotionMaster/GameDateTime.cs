@@ -12,7 +12,7 @@ namespace PotionMaster
     {
         private float counter;
 
-        private static readonly float millisecondsToAdvanceMinute = 2000;
+        private static readonly float millisecondsToAdvanceMinute = 700;
         private static readonly int daysInMonth = 28;
         private static readonly int seasonsInYear = 4;
         public static readonly string[] DaysOfWeek = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
