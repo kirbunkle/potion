@@ -41,5 +41,16 @@
         <Item>down_idle,0,1,2,3</Item>
       </Value>
     </Item>
+    <Item>
+      <Key>4</Key>
+      <Value>
+        <Item>Type=Character</Item>
+        <Item>Test NPC</Item>
+        <Item>spriteSheets/Char3</Item>
+        <Item>animations/Char3</Item>
+        <Item>0.2</Item>
+        <Item>down_idle,0</Item>
+      </Value>
+    </Item>
   </Asset>
 </XnaContent>

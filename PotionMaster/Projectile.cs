@@ -35,13 +35,18 @@ namespace PotionMaster
             Active = true;
         }
 
+        public override void Collide(Collidable obj)
+        {
+
+        }
+
         public new void Update()
         {
             if (Active)
             { 
                 posX += (int)(velocityX * Game1.dt);
                 posY += (int)(velocityY * Game1.dt);
-                if (Game1.currentLocation.IsCollidingWithImpassibleTile(GetCollisionBox(0, 0)))
+                if (Game1.currentLocation.IsCollidingWithImpassibleTile(GetCollisionBox(0, 0))) ///////////////////////// TODO: everything needs to know its own location, not look up current
                 {
                     Active = false;
                 }

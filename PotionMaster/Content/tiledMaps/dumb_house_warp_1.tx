@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object name="dumb_house_warp_1" type="warp" width="29" height="17">
+  <properties>
+   <property name="destMap" value="dumb_grass"/>
+   <property name="destWarpName" value="dumb_grass_warp_1"/>
+   <property name="xPos" type="int" value="20"/>
+   <property name="yPos" type="int" value="0"/>
+  </properties>
+ </object>
+</template>

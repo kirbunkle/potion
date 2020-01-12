@@ -40,6 +40,8 @@ namespace PotionMaster
         public static GameInput input;
         public static PlayerCharacter playerCharacter;
         public static DataManager dataManager;
+        public static Dictionary<string, Location> locations;
+        public static Boolean gradualFollow;
 
         private float zoomCameraOffsetX;
         private float zoomCameraOffsetY;
@@ -77,6 +79,16 @@ namespace PotionMaster
             return CreateAnimatedSprite(factory, "temp");
         }
 
+        public static void WarpPlayer(string mapName, Vector2 pos)
+        {
+            if (locations.TryGetValue(mapName, out Location loc))
+            {
+                currentLocation = loc;
+                playerCharacter.SetPosition(pos);
+                gradualFollow = false;
+            }
+        }
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -105,26 +117,44 @@ namespace PotionMaster
 
             tileSize = 32;
 
-            screenW = 1280;
-            screenH = 720;
+            screenW = 1920 / 2;
+            screenH = 1080 / 2;
             Game1.graphics.PreferredBackBufferWidth = screenW;
             Game1.graphics.PreferredBackBufferHeight = screenH;
             Game1.graphics.ApplyChanges();
 
             camera = new Camera2D(new BoxingViewportAdapter(Window, GraphicsDevice, screenW, screenH));
 
-            zoom = 2;
+            zoom = 1;
             camera.Zoom = zoom;
             
             zoomCameraOffsetX = (screenW - (screenW / zoom)) / 2;
             zoomCameraOffsetY = (screenH - (screenH / zoom)) / 2;
 
+            gradualFollow = true;
+
             content = Content;
             dataManager = new DataManager();
 
-            playerCharacter = (PlayerCharacter)dataManager.CreateCharacter(1, tileSize * 10, tileSize * 10);
             font = Content.Load<BitmapFont>("fonts/font1");
-            currentLocation = new Location();
+
+            locations = new Dictionary<string, Location>();
+            var i = 1;
+            var loc = dataManager.CreateLocation(i);
+            while (loc != null)
+            {
+                locations.Add(loc.Name, loc);
+                i++;
+                loc = dataManager.CreateLocation(i);
+            }
+
+            if (locations.TryGetValue("dumb_house", out Location l))
+            {
+                currentLocation = l;
+            }
+
+            playerCharacter = (PlayerCharacter)dataManager.CreateCharacter(1, currentLocation.WidthInPixels() / 2, currentLocation.HeightInPixels() / 2);
+
             inventory = new Inventory();
             gameDateTime = new GameDateTime();
             input = new GameInput();
@@ -157,32 +187,64 @@ namespace PotionMaster
             dt = gameTime.ElapsedGameTime.Milliseconds;
             gt = gameTime;
 
-            currentLocation.Update();
+            foreach (KeyValuePair<string, Location> l in locations)
+            {
+                l.Value.Update();
+            }
+
             playerCharacter.Update();
             inventory.Update();
-            gameDateTime.Update();
-            
+            gameDateTime.Update();            
+
+            // center on player character
             var oldPos = camera.Position;
             camera.LookAt(playerCharacter.GetCenter());
-            float diffX = Math.Abs(camera.Position.X - oldPos.X);
-            float diffY = Math.Abs(camera.Position.Y - oldPos.Y);
-            if ((diffX > 0.50) || (diffY > 0.50))
+            if (gradualFollow)
             {
-                oldPos += (camera.Position - oldPos) / 12; 
-                oldPos.X = (float)Math.Ceiling(oldPos.X);  // snap to nearest pixel
-                oldPos.Y = (float)Math.Ceiling(oldPos.Y);
-                camera.Position = oldPos;
+                float diffX = Math.Abs(camera.Position.X - oldPos.X);
+                float diffY = Math.Abs(camera.Position.Y - oldPos.Y);
+                if ((diffX > 0.50) || (diffY > 0.50))
+                {
+                    oldPos += (camera.Position - oldPos) / 12;
+                    oldPos.X = (float)Math.Ceiling(oldPos.X);  // snap to nearest pixel
+                    oldPos.Y = (float)Math.Ceiling(oldPos.Y);
+                    camera.Position = oldPos;
+                }
             }
-            oldPos = camera.Position;
-            if (oldPos.X < -zoomCameraOffsetX)
-                oldPos.X = -zoomCameraOffsetX;
-            if (oldPos.X > ((currentLocation.WidthInPixels() + zoomCameraOffsetX) - screenW))
-                oldPos.X = (currentLocation.WidthInPixels() + zoomCameraOffsetX) - screenW;
-            if (oldPos.Y < -zoomCameraOffsetY)
-                oldPos.Y = -zoomCameraOffsetY;
-            if (oldPos.Y > ((currentLocation.HeightInPixels() + zoomCameraOffsetY) - screenH))
-                oldPos.Y = (currentLocation.HeightInPixels() + zoomCameraOffsetY) - screenH;
+            else
+            {
+                gradualFollow = true;
+            }
+
+            oldPos = camera.Position;            
+            camera.LookAt(currentLocation.GetCenter());
+            if ((currentLocation.WidthInPixels() * zoom) > screenW)
+            {
+                // handle hitting the edge of the map
+                if (oldPos.X < -zoomCameraOffsetX)
+                    oldPos.X = -zoomCameraOffsetX;
+                if (oldPos.X > ((currentLocation.WidthInPixels() + zoomCameraOffsetX) - screenW))
+                    oldPos.X = (currentLocation.WidthInPixels() + zoomCameraOffsetX) - screenW;
+            }
+            else
+            {
+                oldPos.X = camera.Position.X;
+            }
+
+            if ((currentLocation.HeightInPixels() * zoom) > screenH)
+            {
+                // handle hitting the edge of the map
+                if (oldPos.Y < -zoomCameraOffsetY)
+                    oldPos.Y = -zoomCameraOffsetY;
+                if (oldPos.Y > ((currentLocation.HeightInPixels() + zoomCameraOffsetY) - screenH))
+                    oldPos.Y = (currentLocation.HeightInPixels() + zoomCameraOffsetY) - screenH;
+            }
+            else
+            {
+                oldPos.Y = camera.Position.Y;
+            }
             camera.Position = oldPos;
+
             //camera.ZoomIn(camera.Zoom*dt*0.01f);
             base.Update(gameTime);
         }
@@ -193,7 +255,7 @@ namespace PotionMaster
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.TransparentBlack);
 
             // camera draw
             spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);

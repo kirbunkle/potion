@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Character.cs" />
+    <Compile Include="Warp.cs" />
     <Compile Include="Collidable.cs" />
     <Compile Include="Drawable.cs" />
     <Compile Include="Enemy.cs" />
@@ -86,8 +87,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\animations\fireplant.xml" />
+    <Content Include="Content\animations\fireplant.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Content\animations\firepot.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Content\animations\Char3.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\animations\spider.xml" />
@@ -95,7 +101,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\animations\io1.xml" />
-    <Content Include="Content\characters\characterData.xml" />
+    <Content Include="Content\tiledMaps\locationData.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Icon.ico" />
     <Content Include="Content\items\itemData.xml">
       <SubType>Designer</SubType>
@@ -107,6 +115,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\characters\" />
     <Folder Include="Content\fonts\" />
     <Folder Include="Content\spriteSheets\" />
     <Folder Include="Content\tiledMaps\tileSheets\" />

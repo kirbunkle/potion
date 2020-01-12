@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PotionMaster
 {
-    public class Collidable : Drawable
+    public abstract class Collidable : Drawable
     {
         protected Rectangle collisionBox;
 
@@ -33,5 +33,7 @@ namespace PotionMaster
                 collisionBox.Width,
                 collisionBox.Height);
         }
+
+        public abstract void Collide(Collidable obj);
     }
 }

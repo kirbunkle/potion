@@ -26,5 +26,10 @@ namespace PotionMaster
         {
             Game1.inventory.AddItem(item);
         }
+
+        public override void Collide(Collidable obj)
+        {
+            
+        }
     }
 }

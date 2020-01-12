@@ -54,6 +54,11 @@ namespace PotionMaster
             Game1.gameDateTime.AdvanceDay();
         }
 
+        public override void Collide(Collidable obj)
+        {
+
+        }
+
         public Vector2 Velocity()
         {
             return new Vector2(velocityX, velocityY);
@@ -97,6 +102,12 @@ namespace PotionMaster
 
             velocityX += mx;
             velocityY += my;
+
+            var obj = Game1.currentLocation.GetCollidingObject(GetCollisionBox((int)velocityX, (int)velocityY));
+            if (obj != null)
+            {
+                obj.Collide(this);
+            }
 
             if (Game1.currentLocation.IsColliding(GetCollisionBox((int)velocityX, 0)))
             {

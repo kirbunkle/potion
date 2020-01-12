@@ -13,11 +13,14 @@ namespace PotionMaster
     public class Location
     {
         private TiledMap tileMap;
-        private Character binch;
-        private Enemy spoder;
-        private LocationObject bag;
+        //private Character binch;
+        //private Character testNPC;
+        //private Enemy spoder;
+        //private LocationObject bag;
         private List<Plant> plants;
         private List<Projectile> projectiles;
+        public string Name { get; set; }
+        private Dictionary<string, Warp> warps;
         //private string beefsauce;
 
         private static readonly int[] plantableTiles = { 2, 3 };
@@ -48,39 +51,60 @@ namespace PotionMaster
             return null;
         }
 
-        public Location()
+        public Location(List<string> data)
         {
-            tileMap = Game1.content.Load<TiledMap>("tiledMaps/dumb_grass");
-            binch = Game1.dataManager.CreateCharacter(2, Game1.tileSize * 15, Game1.tileSize * 8);
-            bag = new LocationObject(Game1.dataManager.GetItem(1));
-            spoder = (Enemy)Game1.dataManager.CreateCharacter(3, Game1.tileSize * 20, Game1.tileSize * 13);
+            Name = data[0];
+            tileMap = Game1.content.Load<TiledMap>("tiledMaps/"+data[0]);
+            //binch = Game1.dataManager.CreateCharacter(2, Game1.tileSize * 15, Game1.tileSize * 8);
+            //testNPC = Game1.dataManager.CreateCharacter(4, Game1.tileSize * 14, Game1.tileSize * 4);
+            //bag = new LocationObject(Game1.dataManager.GetItem(1));
+            //spoder = (Enemy)Game1.dataManager.CreateCharacter(3, Game1.tileSize * 20, Game1.tileSize * 13);
             plants = new List<Plant>();
             projectiles = new List<Projectile>();
+
+            warps = new Dictionary<string, Warp>();
+            Warp warp = null;
+            foreach (TiledMapObject obj in tileMap.ObjectLayers[0].Objects)
+            {
+                warp = new Warp(obj);
+                warps.Add(warp.Name, warp);
+            }
         }
 
         public Interactable GetCollidingObject(Rectangle box) 
         {
-            if (binch.GetCollisionBox().Intersects(box))
+            foreach (KeyValuePair<string, Warp> w in warps)
             {
-                return binch;
+                if (w.Value.GetCollisionBox().Intersects(box)) return w.Value;
             }
-            else if (bag.GetCollisionBox().Intersects(box))
-            {
-                return bag;
-            }
-            else if ((spoder.Active) && (spoder.GetCollisionBox().Intersects(box)))
-            {
-                return spoder;
-            }
-            else
-            {
-                return GetPlantAt(box);
-            }
+            return null;
+            // if (binch.GetCollisionBox().Intersects(box))
+            // {
+            //     return binch;
+            // }
+            // else if (testNPC.GetCollisionBox().Intersects(box))
+            // {
+            //     return testNPC;
+            // }
+            // else if (bag.GetCollisionBox().Intersects(box))
+            // {
+            //     return bag;
+            // }
+            // else if ((spoder.Active) && (spoder.GetCollisionBox().Intersects(box)))
+            // {
+            //     return spoder;
+            // }
+            // else
+            // {
+           
+            //    return GetPlantAt(box);
+          //  }
         }
 
         public bool IsCollidingWithAnotherObject(Rectangle box)
         {
-            return binch.GetCollisionBox().Intersects(box) || bag.GetCollisionBox().Intersects(box);
+            //return binch.GetCollisionBox().Intersects(box) || bag.GetCollisionBox().Intersects(box);
+            return false;
         }
 
         public int GetTileTypeID(int x, int y)
@@ -161,12 +185,30 @@ namespace PotionMaster
             projectiles.Remove(p);
         }
 
+        public Vector2 GetCenter()
+        {
+            return new Vector2(tileMap.WidthInPixels / 2, tileMap.HeightInPixels / 2);
+        }
+
+        public Vector2 GetWarpPos(string name)
+        {
+            if (warps.TryGetValue(name, out Warp w))
+            {
+                return w.GetPosition();
+            }
+            else
+            {
+                return new Vector2(0, 0);
+            }
+        }
+
         public void Update()
         {
             Game1.mapRenderer.Update(tileMap, Game1.gt);
-            binch.Update();
-            bag.Update();
-            if (spoder.Active) spoder.Update();
+            //binch.Update();
+            //testNPC.Update();
+            //bag.Update();
+            //if (spoder.Active) spoder.Update();
             foreach (Plant p in plants)
             {
                 p.Update();
@@ -184,9 +226,10 @@ namespace PotionMaster
         public void Draw()
         {
             Game1.mapRenderer.Draw(tileMap, Game1.camera.GetViewMatrix());
-            binch.Draw();
-            bag.Draw();
-            if (spoder.Active) spoder.Draw();
+            //binch.Draw();
+            ////testNPC.Draw();
+            //bag.Draw();
+            //if (spoder.Active) spoder.Draw();
             foreach (Plant p in plants)
             {
                 p.Draw();

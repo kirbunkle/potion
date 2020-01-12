@@ -155,3 +155,42 @@
 /processor:PassThroughProcessor
 /build:characters/characterData.xml
 
+#begin spriteSheets/Char2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:spriteSheets/Char2.png
+
+#begin spriteSheets/Char3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:spriteSheets/Char3.png
+
+#begin animations/Char3.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:animations/Char3.xml
+
+#begin tiledMaps/dumb_house.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:tiledMaps/dumb_house.tmx
+
+#begin tiledMaps/locationData.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:tiledMaps/locationData.xml
+

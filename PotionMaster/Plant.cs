@@ -81,6 +81,11 @@ namespace PotionMaster
             }
         }
 
+        public override void Collide(Collidable obj)
+        {
+
+        }
+
         public new void Update()
         {
             CheckForPlantGrowth();

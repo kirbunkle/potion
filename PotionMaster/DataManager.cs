@@ -11,6 +11,7 @@ namespace PotionMaster
         private Dictionary<int, Item> items;
         private Dictionary<int, List<string>> itemData;
         private Dictionary<int, List<string>> characterData;
+        private Dictionary<int, List<string>> locationData;
 
         private Item CreateItem(int i)
         {
@@ -33,6 +34,7 @@ namespace PotionMaster
             items = new Dictionary<int, Item>();
             itemData = Game1.content.Load<Dictionary<int, List<string>>>("items/itemData");
             characterData = Game1.content.Load<Dictionary<int, List<string>>>("characters/characterData");
+            locationData = Game1.content.Load<Dictionary<int, List<string>>>("tiledMaps/locationData");
         }
 
         public Item GetItem(int id)
@@ -61,6 +63,15 @@ namespace PotionMaster
                 {
                     return new Enemy(data, x, y);
                 }
+            }
+            return null;
+        }
+
+        public Location CreateLocation(int id)
+        {
+            if (locationData.TryGetValue(id, out List<string> data))
+            {
+                return new Location(data);
             }
             return null;
         }
