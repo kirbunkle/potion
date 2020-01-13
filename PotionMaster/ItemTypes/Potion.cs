@@ -15,7 +15,7 @@ namespace PotionMaster
 
         public override void Use()
         {
-            Game1.currentLocation.AddProjectile(new Projectile(Game1.playerCharacter));
+            Game1.currentLocation.AddProjectile(new Projectile(Game1.playerCharacter, Game1.currentLocation));
             Game1.inventory.DecrementItem(this);
         }
     }

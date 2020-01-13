@@ -44,12 +44,12 @@ namespace PotionMaster
         
         public void Update()
         {
-            sprite.Position = GetPosition();
             sprite.Update(Game1.gt);
         }
 
         public void Draw()
         {
+            sprite.Position = GetPosition();
             Game1.spriteBatch.Draw(sprite);
         }
     }

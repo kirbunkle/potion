@@ -22,7 +22,7 @@ namespace PotionMaster
 
         protected Direction facingDirection;        
 
-        public Character(List<string> data, int x, int y)
+        public Character(List<string> data, int x, int y, Location loc) : base(loc)
         {
             velocityX = 0;
             velocityY = 0;
@@ -103,13 +103,16 @@ namespace PotionMaster
             velocityX += mx;
             velocityY += my;
 
-            var obj = Game1.currentLocation.GetCollidingObject(GetCollisionBox((int)velocityX, (int)velocityY));
-            if (obj != null)
+            if (location != null)
             {
-                obj.Collide(this);
+                var obj = location.GetCollidingObject(GetCollisionBox((int)velocityX, (int)velocityY));
+                if (obj != null)
+                {
+                    obj.Collide(this);
+                }
             }
 
-            if (Game1.currentLocation.IsColliding(GetCollisionBox((int)velocityX, 0)))
+            if ((location != null) && (location.IsColliding(GetCollisionBox((int)velocityX, 0))))
             {
                 velocityX /= 16;
             }
@@ -123,7 +126,7 @@ namespace PotionMaster
                 velocityX %= 1;
             }
 
-            if (Game1.currentLocation.IsColliding(GetCollisionBox(0, (int)velocityY)))
+            if ((location != null) && (location.IsColliding(GetCollisionBox(0, (int)velocityY))))
             {
                 velocityY /= 16;
             }

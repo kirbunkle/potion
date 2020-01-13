@@ -49,7 +49,7 @@ namespace PotionMaster
             return MakeInteractRectangle(posX, posY);
         }
 
-        public PlayerCharacter(List<string> data, int x, int y) : base(data, x, y)
+        public PlayerCharacter(List<string> data, int x, int y, Location loc) : base(data, x, y, loc)
         {
             speed = 0.15f;
             drawToolInteractBox = true;
@@ -91,7 +91,7 @@ namespace PotionMaster
             if (Game1.input.ButtonPressed(GameButtons.A))
             {
                 // interact
-                Interactable obj = Game1.currentLocation.GetCollidingObject(interactBoxRectangle);
+                Interactable obj = location.GetCollidingObject(interactBoxRectangle);
                 if (obj != null)
                 {
                     obj.Interact();

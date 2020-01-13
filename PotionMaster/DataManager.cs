@@ -47,21 +47,21 @@ namespace PotionMaster
             return item;
         }
 
-        public Character CreateCharacter(int id, int x, int y)
+        public Character CreateCharacter(int id, int x, int y, Location loc)
         {
             if (characterData.TryGetValue(id, out List<string> data))
             {
                 if (data[0] == "Type=PlayerCharacter")
                 {
-                    return new PlayerCharacter(data, x, y);
+                    return new PlayerCharacter(data, x, y, loc);
                 }
                 else if (data[0] == "Type=Character")
                 {
-                    return new Character(data, x, y);
+                    return new Character(data, x, y, loc);
                 }
                 else if (data[0] == "Type=Enemy")
                 {
-                    return new Enemy(data, x, y);
+                    return new Enemy(data, x, y, loc);
                 }
             }
             return null;

@@ -66,7 +66,7 @@ namespace PotionMaster
             Warp warp = null;
             foreach (TiledMapObject obj in tileMap.ObjectLayers[0].Objects)
             {
-                warp = new Warp(obj);
+                warp = new Warp(obj, this);
                 warps.Add(warp.Name, warp);
             }
         }

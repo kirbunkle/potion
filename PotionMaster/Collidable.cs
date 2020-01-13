@@ -10,6 +10,7 @@ namespace PotionMaster
     public abstract class Collidable : Drawable
     {
         protected Rectangle collisionBox;
+        protected Location location;
 
         protected Rectangle MakeCollisionBoundingBox()
         {
@@ -20,9 +21,19 @@ namespace PotionMaster
                 (int)sprite.BoundingRectangle.Width - ((Game1.tileSize / 8)));
         }
 
-        public Collidable()
+        public Collidable(Location loc)
         {
+            location = loc;
+        }
 
+        public void SetLocation(Location loc)
+        {
+            location = loc;
+        }
+
+        public Location GetLocation()
+        {
+            return location;
         }
         
         public Rectangle GetCollisionBox(int mx = 0, int my = 0)

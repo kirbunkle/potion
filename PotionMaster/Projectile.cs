@@ -14,7 +14,7 @@ namespace PotionMaster
         private float speed;
         public bool Active { get; set; }
 
-        public Projectile(Character caster)
+        public Projectile(Character caster, Location loc) : base(loc)
         {
             speed = 0.4f;
             switch (caster.FacingDirection())
@@ -46,18 +46,35 @@ namespace PotionMaster
             { 
                 posX += (int)(velocityX * Game1.dt);
                 posY += (int)(velocityY * Game1.dt);
-                if (Game1.currentLocation.IsCollidingWithImpassibleTile(GetCollisionBox(0, 0))) ///////////////////////// TODO: everything needs to know its own location, not look up current
-                {
-                    Active = false;
-                }
+                velocityX *= (float)(0.95);
+                velocityY *= (float)(0.95);
 
-                Interactable i = Game1.currentLocation.GetCollidingObject(GetCollisionBox());
+                if (Math.Abs(velocityX) < 0.1) velocityX = 0;
+                if (Math.Abs(velocityY) < 0.1) velocityY = 0;
 
-                if ((i != null) && (i.GetType() == typeof(Enemy)))
+
+                if (location != null) 
                 {
-                    ((Enemy)i).Active = false;
-                    Active = false;
-                }
+                    if (location.IsCollidingWithImpassibleTile(GetCollisionBox(0, 0)))
+                    {
+                        Active = false;
+                    }
+
+                    Interactable i = location.GetCollidingObject(GetCollisionBox());
+
+                    if (i != null)
+                    {
+                        if (i.GetType() == typeof(Enemy))
+                        {
+                            ((Enemy)i).Active = false;
+                            Active = false;
+                        }
+                    }
+                    if ((velocityX == 0) && (velocityY == 0))
+                    {
+                        Active = false;
+                    }
+                }                
 
                 //sprite.Rotation -= 0.03f * Game1.dt;
                 //sprite.Scale += new Vector2(0.005f * Game1.dt, 0.005f * Game1.dt);

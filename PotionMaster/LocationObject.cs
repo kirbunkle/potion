@@ -13,7 +13,7 @@ namespace PotionMaster
     {
         private Item item;
         
-        public LocationObject(Item i)
+        public LocationObject(Item i, Location loc) : base(loc)
         {
             item = i;
             sprite = Game1.CreateSingleAnimatedSprite(item.SpriteName(), item.AnimationName(), item.AnimationFrames(), isLooping: false);

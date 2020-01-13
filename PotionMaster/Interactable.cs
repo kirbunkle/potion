@@ -11,7 +11,7 @@ namespace PotionMaster
 {
     public abstract class Interactable : Collidable
     {
-        public Interactable()
+        public Interactable(Location loc) : base(loc)
         {
 
         }

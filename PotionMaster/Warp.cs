@@ -15,7 +15,7 @@ namespace PotionMaster
         public string DestinationWarp { get; set; }
         public string Name { get; set; }
         
-        public Warp(TiledMapObject ob)
+        public Warp(TiledMapObject ob, Location loc) : base(loc)
         {
             collisionBox = new Rectangle(0, 0, (int)ob.Size.Width, (int)ob.Size.Height);
             posX = (int)ob.Position.X;

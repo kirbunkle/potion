@@ -85,6 +85,7 @@ namespace PotionMaster
             {
                 currentLocation = loc;
                 playerCharacter.SetPosition(pos);
+                playerCharacter.SetLocation(currentLocation);
                 gradualFollow = false;
             }
         }
@@ -153,7 +154,7 @@ namespace PotionMaster
                 currentLocation = l;
             }
 
-            playerCharacter = (PlayerCharacter)dataManager.CreateCharacter(1, currentLocation.WidthInPixels() / 2, currentLocation.HeightInPixels() / 2);
+            playerCharacter = (PlayerCharacter)dataManager.CreateCharacter(1, currentLocation.WidthInPixels() / 2, currentLocation.HeightInPixels() / 2, currentLocation);
 
             inventory = new Inventory();
             gameDateTime = new GameDateTime();

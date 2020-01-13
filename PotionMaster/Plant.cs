@@ -17,7 +17,6 @@ namespace PotionMaster
         private int[] plantSchedule;
         private int datePlanted;
         private int curDate;
-        private Location myLocation;
         private int cropYield;
 
         private void CheckForPlantGrowth() 
@@ -41,11 +40,10 @@ namespace PotionMaster
             }
         }
 
-        public Plant(Rectangle pos, Seed seed, Location location)
+        public Plant(Rectangle pos, Seed seed, Location loc) : base(loc)
         {
             posX = pos.X;
             posY = pos.Y;
-            myLocation = location;
             spriteFactory = Game1.CreateAnimationFactory(seed.SpriteName(), seed.AnimationName());
             plantAnimationFrames = seed.PlantAnimationFrames();
             plantSchedule = seed.PlantSchedule();
@@ -76,7 +74,7 @@ namespace PotionMaster
         {
             if (ReadyToHarvest())
             {
-                myLocation.Harvest(this);
+                location.Harvest(this);
                 Game1.inventory.AddItem(cropYield);
             }
         }
