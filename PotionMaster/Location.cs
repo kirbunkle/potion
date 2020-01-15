@@ -17,6 +17,7 @@ namespace PotionMaster
         //private Character testNPC;
         //private Enemy spoder;
         //private LocationObject bag;
+        private List<Interactable> interactables;
         private List<Plant> plants;
         private List<Projectile> projectiles;
         public string Name { get; set; }
@@ -61,13 +62,20 @@ namespace PotionMaster
             //spoder = (Enemy)Game1.dataManager.CreateCharacter(3, Game1.tileSize * 20, Game1.tileSize * 13);
             plants = new List<Plant>();
             projectiles = new List<Projectile>();
-
+            interactables = new List<Interactable>();
             warps = new Dictionary<string, Warp>();
-            Warp warp = null;
             foreach (TiledMapObject obj in tileMap.ObjectLayers[0].Objects)
             {
-                warp = new Warp(obj, this);
-                warps.Add(warp.Name, warp);
+                if (obj.Type == "warp")
+                {
+                    Warp warp = new Warp(obj, this);
+                    warps.Add(warp.Name, warp);
+                }
+                if (obj.Type == "npc")
+                {
+                    Character character = Game1.dataManager.CreateCharacter(int.Parse(obj.Name), (int)obj.Position.X, (int)obj.Position.Y, this);
+                    interactables.Add(character);
+                }
             }
         }
 
@@ -76,6 +84,10 @@ namespace PotionMaster
             foreach (KeyValuePair<string, Warp> w in warps)
             {
                 if (w.Value.GetCollisionBox().Intersects(box)) return w.Value;
+            }
+            foreach (Interactable i in interactables)
+            {
+                if (i.GetCollisionBox().Intersects(box)) return i;
             }
             return null;
             // if (binch.GetCollisionBox().Intersects(box))
@@ -103,7 +115,10 @@ namespace PotionMaster
 
         public bool IsCollidingWithAnotherObject(Rectangle box)
         {
-            //return binch.GetCollisionBox().Intersects(box) || bag.GetCollisionBox().Intersects(box);
+            foreach (Interactable i in interactables)
+            {
+                if (i.GetCollisionBox().Intersects(box)) return true;
+            }
             return false;
         }
 
@@ -205,10 +220,10 @@ namespace PotionMaster
         public void Update()
         {
             Game1.mapRenderer.Update(tileMap, Game1.gt);
-            //binch.Update();
-            //testNPC.Update();
-            //bag.Update();
-            //if (spoder.Active) spoder.Update();
+            foreach (Interactable i in interactables)
+            {
+                i.Update();
+            }
             foreach (Plant p in plants)
             {
                 p.Update();
@@ -226,10 +241,10 @@ namespace PotionMaster
         public void Draw()
         {
             Game1.mapRenderer.Draw(tileMap, Game1.camera.GetViewMatrix());
-            //binch.Draw();
-            ////testNPC.Draw();
-            //bag.Draw();
-            //if (spoder.Active) spoder.Draw();
+            foreach (Interactable i in interactables)
+            {
+                i.Draw();
+            }
             foreach (Plant p in plants)
             {
                 p.Draw();

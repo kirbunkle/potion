@@ -118,8 +118,8 @@ namespace PotionMaster
 
             tileSize = 32;
 
-            screenW = 1920 / 2;
-            screenH = 1080 / 2;
+            screenW = 1920 / 3;
+            screenH = 1080 / 3;
             Game1.graphics.PreferredBackBufferWidth = screenW;
             Game1.graphics.PreferredBackBufferHeight = screenH;
             Game1.graphics.ApplyChanges();

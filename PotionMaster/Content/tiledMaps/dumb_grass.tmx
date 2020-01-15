@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="32" tileheight="32" infinite="0" nextobjectid="6">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="32" tileheight="32" infinite="0" nextobjectid="10">
  <tileset firstgid="1" source="dumb_grass.tsx"/>
  <layer name="Tile Layer 1" width="50" height="30">
   <data encoding="csv">
@@ -78,5 +78,6 @@
     <property name="yPos" type="int" value="-1"/>
    </properties>
   </object>
+  <object id="7" name="2" type="npc" gid="8" x="863" y="576" width="32" height="32"/>
  </objectgroup>
 </map>
