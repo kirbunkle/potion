@@ -42,8 +42,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Character.cs" />
-    <Compile Include="Dialogue.cs" />
-    <Compile Include="Event.cs" />
+    <Compile Include="EventTypes\Dialogue.cs" />
+    <Compile Include="EventTypes\Event.cs" />
+    <Compile Include="EventTypes\Fade.cs" />
+    <Compile Include="EventTypes\WarpEvent.cs" />
     <Compile Include="Warp.cs" />
     <Compile Include="Collidable.cs" />
     <Compile Include="Drawable.cs" />
@@ -54,7 +56,7 @@
     <Compile Include="Interactable.cs" />
     <Compile Include="Inventory.cs" />
     <Compile Include="InventoryStack.cs" />
-    <Compile Include="Item.cs" />
+    <Compile Include="ItemTypes\Item.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="ItemTypes\Potion.cs" />
     <Compile Include="ItemTypes\Seed.cs" />

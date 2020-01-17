@@ -51,12 +51,12 @@ namespace PotionMaster
 
         public override void Interact()
         {
-            Game1.PushEvent(new Dialogue());
+            Game1.PushEvent(new Dialogue("Hello, weiner."));
         }
 
         public override void Collide(Collidable obj)
         {
-
+            Game1.PushEvent(new Dialogue("Yo, don't bump me!"));
         }
 
         public Vector2 Velocity()

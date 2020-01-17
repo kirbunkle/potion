@@ -34,9 +34,11 @@ namespace PotionMaster
                 var pos = loc.GetWarpPos(DestinationWarp);
                 pos.X += OffsetPos.X;
                 pos.Y += OffsetPos.Y;
-                if (OffsetPos.X > 0) pos.X += collisionBox.Width; else if (OffsetPos.X < 0) pos.X -= Game1.playerCharacter.GetCollisionBox().Width;
-                if (OffsetPos.Y > 0) pos.Y += collisionBox.Height; else if (OffsetPos.Y < 0) pos.Y -= Game1.playerCharacter.GetCollisionBox().Height;
-                Game1.WarpPlayer(DestinationMap, pos);
+                if (OffsetPos.X > 0) pos.X += (int)(collisionBox.Width * 1.5); else if (OffsetPos.X < 0) pos.X -= (int)(Game1.playerCharacter.GetCollisionBox().Width * 1.5);
+                if (OffsetPos.Y > 0) pos.Y += (int)(collisionBox.Height * 1.5); else if (OffsetPos.Y < 0) pos.Y -= (int)(Game1.playerCharacter.GetCollisionBox().Height * 1.5);
+                Game1.PushEvent(new Fade(false));
+                Game1.PushEvent(new WarpEvent(DestinationMap, pos));
+                Game1.PushEvent(new Fade(true));
             }
         }
 
