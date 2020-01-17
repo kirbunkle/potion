@@ -42,6 +42,7 @@ namespace PotionMaster
         public static DataManager dataManager;
         public static Dictionary<string, Location> locations;
         public static Boolean gradualFollow;
+        public static List<Event> eventStack;
 
         private float zoomCameraOffsetX;
         private float zoomCameraOffsetY;
@@ -90,6 +91,11 @@ namespace PotionMaster
             }
         }
 
+        public static void PushEvent(Event e)
+        {
+            eventStack.Add(e);
+        }
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -136,6 +142,8 @@ namespace PotionMaster
 
             content = Content;
             dataManager = new DataManager();
+
+            eventStack = new List<Event>();
 
             font = Content.Load<BitmapFont>("fonts/font1");
 
@@ -188,14 +196,36 @@ namespace PotionMaster
             dt = gameTime.ElapsedGameTime.Milliseconds;
             gt = gameTime;
 
-            foreach (KeyValuePair<string, Location> l in locations)
+            Boolean gamePaused = false;
+
+            while (eventStack.Count > 0)
             {
-                l.Value.Update();
+                Event currentEvent = eventStack[eventStack.Count - 1];
+                currentEvent.Update();
+                if (currentEvent.Complete)
+                {
+                    eventStack.Remove(currentEvent);
+                }
+                else
+                {
+                    gamePaused = currentEvent.GamePaused;
+                    break;
+                }
             }
 
-            playerCharacter.Update();
-            inventory.Update();
-            gameDateTime.Update();            
+            if (!gamePaused)
+            {
+
+                foreach (KeyValuePair<string, Location> l in locations)
+                {
+                    l.Value.Update();
+                }
+
+                playerCharacter.Update();
+                inventory.Update();
+                gameDateTime.Update();
+
+            }
 
             // center on player character
             var oldPos = camera.Position;
@@ -262,6 +292,10 @@ namespace PotionMaster
             spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
             currentLocation.Draw();
             playerCharacter.Draw();
+            if (eventStack.Count > 0)
+            {
+                eventStack[eventStack.Count - 1].Draw();
+            }
             spriteBatch.End();
 
             // hud draw
@@ -269,6 +303,10 @@ namespace PotionMaster
             currentLocation.DrawHud();
             inventory.DrawHud();
             gameDateTime.DrawHud();
+            if (eventStack.Count > 0)
+            {
+                eventStack[eventStack.Count - 1].DrawHud();
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);

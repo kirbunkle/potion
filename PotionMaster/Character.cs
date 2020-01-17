@@ -51,7 +51,7 @@ namespace PotionMaster
 
         public override void Interact()
         {
-            Game1.gameDateTime.AdvanceDay();
+            Game1.PushEvent(new Dialogue());
         }
 
         public override void Collide(Collidable obj)

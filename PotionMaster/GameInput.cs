@@ -60,7 +60,12 @@ namespace PotionMaster
         public bool ButtonPressed(GameButtons b)
         {
             Keys k = GetKeyFromGameButton(b);
-            return keyboardInput.IsKeyDown(k) && (!oldKeyboardInput.IsKeyDown(k));
+            if (keyboardInput.IsKeyDown(k) && (!oldKeyboardInput.IsKeyDown(k)))
+            {
+                oldKeyboardInput = keyboardInput;
+                return true;
+            }
+            return false;
         }
     }
 }
