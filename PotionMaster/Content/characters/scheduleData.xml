@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="System.Collections.Generic.Dictionary[int, System.Collections.Generic.List[System.String]]">
+    <Item>
+      <Key>5</Key>
+      <Value>
+        <Item>start,1,28,18</Item>
+        <Item>6:30,1,30,23</Item>
+        <Item>7:30,1,28,18</Item>
+      </Value>
+    </Item>
+  </Asset>
+</XnaContent>

@@ -15,10 +15,10 @@ namespace PotionMaster
         protected Rectangle MakeCollisionBoundingBox()
         {
             return new Rectangle(
-                (Game1.tileSize / 8),
-                ((int)sprite.BoundingRectangle.Height / 2) + (Game1.tileSize / 8) - ((int)sprite.BoundingRectangle.Width / 2),
-                (int)sprite.BoundingRectangle.Width - ((Game1.tileSize / 8) * 2),
-                (int)sprite.BoundingRectangle.Width - ((Game1.tileSize / 8)));
+                (Game1.tileSize / 6),
+                ((int)sprite.BoundingRectangle.Height / 2) + (Game1.tileSize / 6) - ((int)sprite.BoundingRectangle.Width / 2),
+                (int)sprite.BoundingRectangle.Width - ((Game1.tileSize / 6) * 2),
+                (int)sprite.BoundingRectangle.Width - ((Game1.tileSize / 6)) - 1);
         }
 
         public Collidable(Location loc)

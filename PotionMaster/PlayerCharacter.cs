@@ -11,51 +11,9 @@ namespace PotionMaster
 {
     public class PlayerCharacter : Character
     {
-        private float speed;
-        private bool drawToolInteractBox;
-        private Texture2D interactBoxTexture;
-        private Rectangle interactBoxRectangle;
-        private Rectangle interactToolBoxRectangle;
-
-        private Rectangle MakeInteractRectangle(int xIn, int yIn)
-        {
-            int x = xIn;
-            int y = yIn;
-            switch (facingDirection)
-            {
-                case Direction.Down:
-                    y += Game1.tileSize;
-                    break;
-                case Direction.Up:
-                    y -= Game1.tileSize;
-                    break;
-                case Direction.Left:
-                    x -= Game1.tileSize;
-                    break;
-                case Direction.Right:
-                    x += Game1.tileSize;
-                    break;
-            }
-            return new Rectangle(x, y, Game1.tileSize, Game1.tileSize);
-        }
-
-        private Rectangle FindInteractToolBoxRectangle()
-        {
-            return MakeInteractRectangle(((posX + (Game1.tileSize / 2)) / Game1.tileSize) * Game1.tileSize, ((posY + (Game1.tileSize / 2)) / Game1.tileSize) * Game1.tileSize);
-        }
-
-        private Rectangle FindInteractBoxRectangle()
-        {
-            return MakeInteractRectangle(posX, posY);
-        }
-
         public PlayerCharacter(List<string> data, int x, int y, Location loc) : base(data, x, y, loc)
         {
-            speed = 0.15f;
-            drawToolInteractBox = true;
-            interactBoxTexture = Game1.content.Load<Texture2D>("spriteSheets/simplebox");
-            interactToolBoxRectangle = FindInteractToolBoxRectangle();
-            interactBoxRectangle = FindInteractBoxRectangle();
+
         }
 
         public Rectangle GetToolRectangle()

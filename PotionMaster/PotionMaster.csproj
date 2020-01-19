@@ -45,6 +45,7 @@
     <Compile Include="EventTypes\Dialogue.cs" />
     <Compile Include="EventTypes\Event.cs" />
     <Compile Include="EventTypes\Fade.cs" />
+    <Compile Include="EventTypes\MovePathEvent.cs" />
     <Compile Include="EventTypes\WarpEvent.cs" />
     <Compile Include="Warp.cs" />
     <Compile Include="Collidable.cs" />
@@ -123,6 +124,12 @@
     <Folder Include="Content\fonts\" />
     <Folder Include="Content\spriteSheets\" />
     <Folder Include="Content\tiledMaps\tileSheets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="submodules\High-Speed-Priority-Queue-for-C-Sharp\Priority Queue\Priority Queue.csproj">
+      <Project>{1531c1ea-bd53-41d1-a34b-cfcdf79d2651}</Project>
+      <Name>Priority Queue</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

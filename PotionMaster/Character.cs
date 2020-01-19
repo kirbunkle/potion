@@ -19,25 +19,41 @@ namespace PotionMaster
         private string curSprite;
         private float velocityX;
         private float velocityY;
+        private List<Event> events;
 
-        protected Direction facingDirection;        
+        // TODO: probably don't need these
+        protected bool drawToolInteractBox;
+        protected Texture2D interactBoxTexture;
+        protected Rectangle interactBoxRectangle;
+        protected Rectangle interactToolBoxRectangle;
+
+        protected float speed;
+        protected Direction facingDirection;
 
         public Character(List<string> data, int x, int y, Location loc) : base(loc)
         {
+            drawToolInteractBox = true;
+            interactBoxTexture = Game1.content.Load<Texture2D>("spriteSheets/simplebox");
+            interactToolBoxRectangle = FindInteractToolBoxRectangle();
+            interactBoxRectangle = FindInteractBoxRectangle();
+
             velocityX = 0;
             velocityY = 0;
 
             curSprite = "";
+            speed = 0.15f;
+
+            events = new List<Event>();
 
             spriteFactory = Game1.CreateAnimationFactory(data[2], data[3]);
             float frameDuration = float.Parse(data[4]);
             for (int i = 5; i < data.Count; i++)
             {
                 var indexes = data[i].Split(',');
-                int[] animationFrames = new int[indexes.Count()-1];
+                int[] animationFrames = new int[indexes.Count() - 1];
                 for (int j = 0; j < indexes.Count() - 1; j++)
                 {
-                    animationFrames[j] = Int32.Parse(indexes[j+1]);
+                    animationFrames[j] = Int32.Parse(indexes[j + 1]);
                 }
                 spriteFactory.Add(indexes[0], new SpriteSheetAnimationData(animationFrames, frameDuration, (animationFrames.Count() > 1)));
             }
@@ -49,14 +65,50 @@ namespace PotionMaster
             posY = y;
         }
 
+        // TODO: likewise probably dont need these things but idk
+        protected Rectangle MakeInteractRectangle(int xIn, int yIn)
+        {
+            int x = xIn;
+            int y = yIn;
+            switch (facingDirection)
+            {
+                case Direction.Down:
+                    y += Game1.tileSize;
+                    break;
+                case Direction.Up:
+                    y -= Game1.tileSize;
+                    break;
+                case Direction.Left:
+                    x -= Game1.tileSize;
+                    break;
+                case Direction.Right:
+                    x += Game1.tileSize;
+                    break;
+            }
+            return new Rectangle(x, y, Game1.tileSize, Game1.tileSize);
+        }
+
+        protected Rectangle FindInteractToolBoxRectangle()
+        {
+            return MakeInteractRectangle(((posX + (Game1.tileSize / 2)) / Game1.tileSize) * Game1.tileSize, ((posY + (Game1.tileSize / 2)) / Game1.tileSize) * Game1.tileSize);
+        }
+
+        protected Rectangle FindInteractBoxRectangle()
+        {
+            return MakeInteractRectangle(posX, posY);
+        }
+
         public override void Interact()
         {
-            Game1.PushEvent(new Dialogue("Hello, weiner."));
+            Game1.PushEvent(new Dialogue("I'm so busy... please leave me alone."));
+            int tileX = posX / Game1.tileSize;
+            int tileY = posY / Game1.tileSize;
+            events.Add(new MovePathEvent(location, this, tileX, tileY, (tileX + Game1.gameDateTime.Minute) % location.TileMapW(), (tileY + Game1.gameDateTime.Hour) % location.TileMapH()));
         }
 
         public override void Collide(Collidable obj)
         {
-            Game1.PushEvent(new Dialogue("Yo, don't bump me!"));
+            //Game1.PushEvent(new Dialogue("Yo, don't bump me!"));
         }
 
         public Vector2 Velocity()
@@ -69,8 +121,9 @@ namespace PotionMaster
             return facingDirection;
         }
 
-        public void Move(float mx, float my)
+        public Vector2 Move(float mx, float my)
         {
+            Vector2 result = new Vector2(posX, posY);
             string oldSprite = curSprite;
             if (my > 0)
             {
@@ -105,14 +158,14 @@ namespace PotionMaster
 
             if (location != null)
             {
-                var obj = location.GetCollidingObject(GetCollisionBox((int)velocityX, (int)velocityY));
+                var obj = location.GetCollidingObject(GetCollisionBox((int)velocityX, (int)velocityY), this);
                 if (obj != null)
                 {
                     obj.Collide(this);
                 }
             }
 
-            if ((location != null) && (location.IsColliding(GetCollisionBox((int)velocityX, 0))))
+            if ((location != null) && (location.IsColliding(GetCollisionBox((int)velocityX, 0), this)))
             {
                 velocityX /= 16;
             }
@@ -126,7 +179,7 @@ namespace PotionMaster
                 velocityX %= 1;
             }
 
-            if ((location != null) && (location.IsColliding(GetCollisionBox(0, (int)velocityY))))
+            if ((location != null) && (location.IsColliding(GetCollisionBox(0, (int)velocityY), this)))
             {
                 velocityY /= 16;
             }
@@ -139,6 +192,51 @@ namespace PotionMaster
                 posY = posY + (int)velocityY;
                 velocityY %= 1;
             }
+            result.X -= posX;
+            result.Y -= posY;
+            return result;
+        }
+
+        public Vector2 WalkToward(int destX, int destY, Boolean finishWalkingIfZero = false)
+        {
+            Vector2 result = new Vector2(destX - posX, destY - posY);
+            float myVelocity = speed * Game1.dt;
+            if ((result.X != 0) && (result.Y != 0))
+            {
+                myVelocity *= 0.7F;
+            }
+
+            if (result.X > myVelocity) result.X = myVelocity;
+            if (result.X < -myVelocity) result.X = -myVelocity;
+            if (result.Y > myVelocity) result.Y = myVelocity;
+            if (result.Y < -myVelocity) result.Y = -myVelocity;
+
+            if (!((result.X == 0) && (result.Y == 0)) || finishWalkingIfZero) Move(result.X, result.Y);
+            return result;
+        }
+
+        public new void Update()
+        {
+            while (events.Count > 0)
+            {
+                Event currentEvent = events[events.Count - 1];
+                currentEvent.Update();
+                if (currentEvent.Complete)
+                {
+                    events.Remove(currentEvent);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            base.Update();
+        }
+
+        public new void Draw()
+        {
+            base.Draw();
+            Game1.spriteBatch.Draw(interactBoxTexture, GetCollisionBox(), Color.YellowGreen);
         }
     }
 }

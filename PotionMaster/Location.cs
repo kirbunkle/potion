@@ -18,6 +18,7 @@ namespace PotionMaster
         //private Enemy spoder;
         //private LocationObject bag;
         private List<Interactable> interactables;
+        private List<Character> characters;
         private List<Plant> plants;
         private List<Projectile> projectiles;
         public string Name { get; set; }
@@ -63,6 +64,7 @@ namespace PotionMaster
             plants = new List<Plant>();
             projectiles = new List<Projectile>();
             interactables = new List<Interactable>();
+            characters = new List<Character>();
             warps = new Dictionary<string, Warp>();
             foreach (TiledMapObject obj in tileMap.ObjectLayers[0].Objects)
             {
@@ -73,21 +75,35 @@ namespace PotionMaster
                 }
                 if (obj.Type == "npc")
                 {
-                    Character character = Game1.dataManager.CreateCharacter(int.Parse(obj.Name), (int)obj.Position.X, (int)obj.Position.Y, this);
-                    interactables.Add(character);
+                    Character character = Game1.dataManager.CreateCharacter(int.Parse(obj.Name), 30 * Game1.tileSize, 10 * Game1.tileSize, this);
+                    characters.Add(character);
                 }
             }
         }
 
-        public Interactable GetCollidingObject(Rectangle box) 
+        public int TileMapW()
+        {
+            return tileMap.Width;
+        }
+
+        public int TileMapH()
+        {
+            return tileMap.Height;
+        }
+
+        public Interactable GetCollidingObject(Rectangle box, Collidable obj = null) 
         {
             foreach (KeyValuePair<string, Warp> w in warps)
             {
-                if (w.Value.GetCollisionBox().Intersects(box)) return w.Value;
+                if ((w.Value.GetCollisionBox().Intersects(box)) && (obj != w.Value)) return w.Value;
             }
             foreach (Interactable i in interactables)
             {
-                if (i.GetCollisionBox().Intersects(box)) return i;
+                if ((i.GetCollisionBox().Intersects(box)) && (obj != i)) return i;
+            }
+            foreach (Character c in characters)
+            {
+                if ((c.GetCollisionBox().Intersects(box)) && (obj != c)) return c;
             }
             return null;
             // if (binch.GetCollisionBox().Intersects(box))
@@ -113,24 +129,33 @@ namespace PotionMaster
           //  }
         }
 
-        public bool IsCollidingWithAnotherObject(Rectangle box)
+        public bool IsCollidingWithAnotherObject(Rectangle box, Collidable obj = null)
         {
             foreach (Interactable i in interactables)
             {
-                if (i.GetCollisionBox().Intersects(box)) return true;
+                if ((i.GetCollisionBox().Intersects(box)) && (obj != i)) return true;
+            }
+            foreach (Character c in characters)
+            {
+                if ((c.GetCollisionBox().Intersects(box)) && (obj != c)) return true;
             }
             return false;
+        }
+
+        public int GetTileTypeIDByTileIndex(int x, int y)
+        {
+            if ((tileMap.TileLayers[0].TryGetTile(x, y, out TiledMapTile? tile)) && tile.HasValue)
+            {
+                return tile.Value.GlobalIdentifier;
+            }
+            return -1;
         }
 
         public int GetTileTypeID(int x, int y)
         {
             int sampleX = x / Game1.tileSize;
             int sampleY = y / Game1.tileSize;
-            if ((tileMap.TileLayers[0].TryGetTile(sampleX, sampleY, out TiledMapTile? tile)) && tile.HasValue)
-            {
-                return tile.Value.GlobalIdentifier;
-            }
-            return -1;
+            return GetTileTypeIDByTileIndex(sampleX, sampleY);
         }
 
         public bool IsCollidingAtPoint(int x, int y)
@@ -142,13 +167,13 @@ namespace PotionMaster
                 || (GetTileTypeID(x, y) <= 0);
         }
 
-        public bool IsColliding(Rectangle box)
+        public bool IsColliding(Rectangle box, Collidable obj = null)
         {
             return IsCollidingAtPoint(box.X, box.Y)
                 || IsCollidingAtPoint(box.X + box.Width, box.Y)
                 || IsCollidingAtPoint(box.X, box.Y + box.Height)
                 || IsCollidingAtPoint(box.X + box.Width, box.Y + box.Height)
-                || IsCollidingWithAnotherObject(box);
+                || IsCollidingWithAnotherObject(box, obj);
         }
 
         public bool IsCollidingWithImpassibleTile(Rectangle box)
@@ -228,6 +253,10 @@ namespace PotionMaster
             {
                 p.Update();
             }
+            foreach (Character c in characters)
+            {
+                c.Update();
+            }
             for (int i = projectiles.Count-1; i >= 0; i--)
             {
                 Projectile p = projectiles[i];
@@ -244,6 +273,10 @@ namespace PotionMaster
             foreach (Interactable i in interactables)
             {
                 i.Draw();
+            }
+            foreach (Character c in characters)
+            {
+                c.Draw();
             }
             foreach (Plant p in plants)
             {

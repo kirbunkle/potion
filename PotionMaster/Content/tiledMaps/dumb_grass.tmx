@@ -78,6 +78,6 @@
     <property name="yPos" type="int" value="-1"/>
    </properties>
   </object>
-  <object id="7" name="2" type="npc" gid="8" x="863" y="576" width="32" height="32"/>
+  <object id="7" name="5" type="npc" gid="8" x="863" y="576" width="32" height="32"/>
  </objectgroup>
 </map>
