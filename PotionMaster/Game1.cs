@@ -124,15 +124,15 @@ namespace PotionMaster
 
             tileSize = 24;
 
-            screenW = 1920;
-            screenH = 1080;
+            screenW = 1920 / 3;
+            screenH = 1080 / 3;
             Game1.graphics.PreferredBackBufferWidth = screenW;
             Game1.graphics.PreferredBackBufferHeight = screenH;
             Game1.graphics.ApplyChanges();
 
             camera = new Camera2D(new BoxingViewportAdapter(Window, GraphicsDevice, screenW, screenH));
 
-            zoom = 3;
+            zoom = 1;
             camera.Zoom = zoom;
             
             zoomCameraOffsetX = (screenW - (screenW / zoom)) / 2;

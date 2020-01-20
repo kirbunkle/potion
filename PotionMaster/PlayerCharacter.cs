@@ -78,11 +78,11 @@ namespace PotionMaster
             if (drawToolInteractBox)
             {
                 //Game1.spriteBatch.Draw(interactBoxTexture, GetCollisionBox(), Color.YellowGreen);
-                //Game1.spriteBatch.Draw(interactBoxTexture, 
-                //    new Rectangle((int)sprite.BoundingRectangle.X, (int)sprite.BoundingRectangle.Y, 
-                //    (int)sprite.BoundingRectangle.Width, (int)sprite.BoundingRectangle.Height), Color.Indigo);
+                Game1.spriteBatch.Draw(interactBoxTexture, 
+                    new Rectangle((int)sprite.BoundingRectangle.X, (int)sprite.BoundingRectangle.Y, 
+                    (int)sprite.BoundingRectangle.Width, (int)sprite.BoundingRectangle.Height), Color.Indigo);
                 Game1.spriteBatch.Draw(interactBoxTexture, interactToolBoxRectangle, Color.OrangeRed);
-                //Game1.spriteBatch.Draw(interactBoxTexture, interactBoxRectangle, Color.Purple);
+                Game1.spriteBatch.Draw(interactBoxTexture, interactBoxRectangle, Color.Purple);
             }
         }
 

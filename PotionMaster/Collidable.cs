@@ -14,7 +14,7 @@ namespace PotionMaster
 
         protected Rectangle MakeCollisionBoundingBox()
         {
-            int t = Game1.tileSize / 6;
+            int t = Game1.tileSize / 4;
             int l = (int)sprite.BoundingRectangle.Width - (2 * t);
 
             return new Rectangle(

@@ -88,14 +88,28 @@ namespace PotionMaster
             return new Rectangle(x, y, Game1.tileSize, Game1.tileSize);
         }
 
+        protected Rectangle GetTileFromCenter()
+        {
+            Rectangle r = GetCollisionBox();
+            int centerX = r.X + (r.Width / 2);
+            int centerY = r.Y + (r.Height / 2);
+            r.X = centerX - (Game1.tileSize / 2);
+            r.Y = centerY - (Game1.tileSize / 2);
+            r.Height = Game1.tileSize;
+            r.Width = Game1.tileSize;
+            return r;
+        }
+
         protected Rectangle FindInteractToolBoxRectangle()
         {
-            return MakeInteractRectangle(((posX + (Game1.tileSize / 2)) / Game1.tileSize) * Game1.tileSize, ((posY + (Game1.tileSize / 2)) / Game1.tileSize) * Game1.tileSize);
+            Rectangle r = GetTileFromCenter();
+            return MakeInteractRectangle(((r.X + (Game1.tileSize / 2)) / Game1.tileSize) * Game1.tileSize, ((r.Y + (Game1.tileSize / 2)) / Game1.tileSize) * Game1.tileSize);
         }
 
         protected Rectangle FindInteractBoxRectangle()
         {
-            return MakeInteractRectangle(posX, posY);
+            Rectangle r = GetTileFromCenter();
+            return MakeInteractRectangle(r.X, r.Y);
         }
 
         public override void Interact()
