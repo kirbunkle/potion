@@ -31,7 +31,7 @@ namespace PotionMaster
         {
             if ((obj == Game1.playerCharacter) && (Game1.locations.TryGetValue(DestinationMap, out Location loc)))
             {
-                var pos = loc.GetWarpPos(DestinationWarp);
+                var pos = loc.GetWarpCenterPos(DestinationWarp);
                 pos.X += OffsetPos.X;
                 pos.Y += OffsetPos.Y;
                 if (OffsetPos.X > 0) pos.X += (int)(collisionBox.Width * 1.5); else if (OffsetPos.X < 0) pos.X -= (int)(Game1.playerCharacter.GetCollisionBox().Width * 1.5);

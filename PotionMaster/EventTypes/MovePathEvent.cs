@@ -135,12 +135,12 @@ namespace PotionMaster
             }
             else
             {
-                Vector2 v = character.WalkToward(curTile.X * Game1.tileSize, curTile.Y * Game1.tileSize);
+                Vector2 v = character.WalkTowardCenter((curTile.X * Game1.tileSize) + (Game1.tileSize / 2), (curTile.Y * Game1.tileSize) + (Game1.tileSize / 2));
                 while ((v.X == 0) && (v.Y == 0))
                 {
                     if (curTile.Parent == null)
                     {
-                        v = character.WalkToward(curTile.X * Game1.tileSize, curTile.Y * Game1.tileSize, true);
+                        v = character.WalkTowardCenter((curTile.X * Game1.tileSize) + (Game1.tileSize / 2), (curTile.Y * Game1.tileSize) + (Game1.tileSize / 2), true);
                         curTile = curTile.Parent;
                         Complete = true;
                         break;
@@ -148,7 +148,7 @@ namespace PotionMaster
                     else
                     {
                         curTile = curTile.Parent;
-                        v = character.WalkToward(curTile.X * Game1.tileSize, curTile.Y * Game1.tileSize);
+                        v = character.WalkTowardCenter((curTile.X * Game1.tileSize) + (Game1.tileSize / 2), (curTile.Y * Game1.tileSize) + (Game1.tileSize / 2));
                     }
                 }
             }

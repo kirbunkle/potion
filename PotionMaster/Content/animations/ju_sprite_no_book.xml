@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="System.Collections.Generic.Dictionary[System.String, Microsoft.Xna.Framework.Rectangle]">
+    <Item>
+      <Key>ju_sprite_no_book_000.png</Key>
+      <Value>0 0 28 43</Value>
+    </Item>
+    <Item>
+      <Key>ju_sprite_no_book_001.png</Key>
+      <Value>28 0 28 43</Value>
+    </Item>
+    <Item>
+      <Key>ju_sprite_no_book_002.png</Key>
+      <Value>56 0 28 43</Value>
+    </Item>
+    <Item>
+      <Key>ju_sprite_no_book_003.png</Key>
+      <Value>84 0 28 43</Value>
+    </Item>  
+  </Asset>
+</XnaContent>

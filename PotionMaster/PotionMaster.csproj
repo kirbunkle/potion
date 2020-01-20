@@ -101,10 +101,10 @@
     <Content Include="Content\animations\Char3.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Content\animations\spider.xml" />
-    <Content Include="Content\animations\test1.xml">
+    <Content Include="Content\animations\ju_sprite_no_book.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Content\animations\spider.xml" />
     <Content Include="Content\animations\io1.xml" />
     <Content Include="Content\tiledMaps\locationData.xml">
       <SubType>Designer</SubType>

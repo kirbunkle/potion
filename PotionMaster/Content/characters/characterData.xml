@@ -70,5 +70,41 @@
         <Item>up,9,10,11,10</Item>
       </Value>
     </Item>
+    <Item>
+      <Key>6</Key>
+      <Value>
+        <Item>Type=PlayerCharacter</Item>
+        <Item>Beef Boy</Item>
+        <Item>spriteSheets/dh_mc_sprite_sheet2</Item>
+        <Item>animations/dh_mc_sprite_sheet2</Item>
+        <Item>0.2</Item>
+        <Item>down_idle,0</Item>
+        <Item>left_idle,1</Item>
+        <Item>right_idle,2</Item>
+        <Item>up_idle,3</Item>
+        <Item>down,0</Item>
+        <Item>left,1</Item>
+        <Item>right,2</Item>
+        <Item>up,3</Item>
+      </Value>
+    </Item>
+    <Item>
+      <Key>7</Key>
+      <Value>
+        <Item>Type=Character</Item>
+        <Item>Book Girl</Item>
+        <Item>spriteSheets/ju_sprite_no_book</Item>
+        <Item>animations/ju_sprite_no_book</Item>
+        <Item>0.2</Item>
+        <Item>down_idle,0</Item>
+        <Item>left_idle,1</Item>
+        <Item>right_idle,2</Item>
+        <Item>up_idle,3</Item>
+        <Item>down,0</Item>
+        <Item>left,1</Item>
+        <Item>right,2</Item>
+        <Item>up,3</Item>
+      </Value>
+    </Item>
   </Asset>
 </XnaContent>

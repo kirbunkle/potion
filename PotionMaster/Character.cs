@@ -101,8 +101,9 @@ namespace PotionMaster
         public override void Interact()
         {
             Game1.PushEvent(new Dialogue("I'm so busy... please leave me alone."));
-            int tileX = posX / Game1.tileSize;
-            int tileY = posY / Game1.tileSize;
+            Vector2 c = GetCenterCollisionBox();
+            int tileX = (int)c.X / Game1.tileSize;
+            int tileY = (int)c.Y / Game1.tileSize;
             events.Add(new MovePathEvent(location, this, tileX, tileY, (tileX + Game1.gameDateTime.Minute) % location.TileMapW(), (tileY + Game1.gameDateTime.Hour) % location.TileMapH()));
         }
 
@@ -197,9 +198,11 @@ namespace PotionMaster
             return result;
         }
 
-        public Vector2 WalkToward(int destX, int destY, Boolean finishWalkingIfZero = false)
+        public Vector2 WalkTowardCenter(int destX, int destY, Boolean finishWalkingIfZero = false)
         {
-            Vector2 result = new Vector2(destX - posX, destY - posY);
+            Vector2 result = GetCenterCollisionBox();
+            result.X = destX - result.X;
+            result.Y = destY - result.Y;
             float myVelocity = speed * Game1.dt;
             if ((result.X != 0) && (result.Y != 0))
             {

@@ -10,17 +10,17 @@ namespace PotionMaster
     public class WarpEvent : Event
     {
         private string mapName;
-        private Vector2 pos;
+        private Vector2 centerPos;
 
-        public WarpEvent(string mapNameIn, Vector2 posIn)
+        public WarpEvent(string mapNameIn, Vector2 centerPosIn)
         {
             mapName = mapNameIn;
-            pos = posIn;
+            centerPos = centerPosIn;
         }
 
         public override void Update()
         {
-            Game1.WarpPlayer(mapName, pos);
+            Game1.WarpPlayer(mapName, centerPos);
             Complete = true;
         }
 

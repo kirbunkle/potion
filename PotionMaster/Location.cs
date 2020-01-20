@@ -75,7 +75,7 @@ namespace PotionMaster
                 }
                 if (obj.Type == "npc")
                 {
-                    Character character = Game1.dataManager.CreateCharacter(int.Parse(obj.Name), 30 * Game1.tileSize, 10 * Game1.tileSize, this);
+                    Character character = Game1.dataManager.CreateCharacter(int.Parse(obj.Name), (int)obj.Position.X, (int)obj.Position.Y, this);
                     characters.Add(character);
                 }
             }
@@ -230,11 +230,11 @@ namespace PotionMaster
             return new Vector2(tileMap.WidthInPixels / 2, tileMap.HeightInPixels / 2);
         }
 
-        public Vector2 GetWarpPos(string name)
+        public Vector2 GetWarpCenterPos(string name)
         {
             if (warps.TryGetValue(name, out Warp w))
             {
-                return w.GetPosition();
+                return w.GetCenterCollisionBox();
             }
             else
             {

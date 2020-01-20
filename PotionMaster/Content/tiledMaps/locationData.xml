@@ -4,13 +4,13 @@
     <Item>
       <Key>1</Key>
       <Value>
-        <Item>dumb_grass</Item>
+        <Item>smart_grass</Item>
       </Value>
     </Item>
     <Item>
       <Key>2</Key>
       <Value>
-        <Item>dumb_house</Item>
+        <Item>smart_house</Item>
       </Value>
     </Item>
   </Asset>

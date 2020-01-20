@@ -194,3 +194,47 @@
 /processor:PassThroughProcessor
 /build:tiledMaps/locationData.xml
 
+#begin tiledMaps/smart_grass.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:tiledMaps/smart_grass.tmx
+
+#begin tiledMaps/smart_house.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:tiledMaps/smart_house.tmx
+
+#begin animations/dh_mc_sprite_sheet2.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:animations/dh_mc_sprite_sheet2.xml
+
+#begin animations/ju_sprite_no_book.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:animations/ju_sprite_no_book.xml
+
+#begin spriteSheets/dh_mc_sprite_sheet2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:spriteSheets/dh_mc_sprite_sheet2.png
+
+#begin spriteSheets/ju_sprite_no_book.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:spriteSheets/ju_sprite_no_book.png
+

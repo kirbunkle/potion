@@ -80,12 +80,12 @@ namespace PotionMaster
             return CreateAnimatedSprite(factory, "temp");
         }
 
-        public static void WarpPlayer(string mapName, Vector2 pos)
+        public static void WarpPlayer(string mapName, Vector2 centerPos)
         {
             if (locations.TryGetValue(mapName, out Location loc))
             {
                 currentLocation = loc;
-                playerCharacter.SetPosition(pos);
+                playerCharacter.SetCenterPosition(centerPos);
                 playerCharacter.SetLocation(currentLocation);
                 gradualFollow = false;
             }
@@ -122,17 +122,17 @@ namespace PotionMaster
             mapRenderer = new TiledMapRenderer(GraphicsDevice);
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            tileSize = 32;
+            tileSize = 24;
 
-            screenW = 1920 / 3;
-            screenH = 1080 / 3;
+            screenW = 1920;
+            screenH = 1080;
             Game1.graphics.PreferredBackBufferWidth = screenW;
             Game1.graphics.PreferredBackBufferHeight = screenH;
             Game1.graphics.ApplyChanges();
 
             camera = new Camera2D(new BoxingViewportAdapter(Window, GraphicsDevice, screenW, screenH));
 
-            zoom = 1;
+            zoom = 3;
             camera.Zoom = zoom;
             
             zoomCameraOffsetX = (screenW - (screenW / zoom)) / 2;
@@ -157,12 +157,12 @@ namespace PotionMaster
                 loc = dataManager.CreateLocation(i);
             }
 
-            if (locations.TryGetValue("dumb_house", out Location l))
+            if (locations.TryGetValue("smart_house", out Location l))
             {
                 currentLocation = l;
             }
 
-            playerCharacter = (PlayerCharacter)dataManager.CreateCharacter(1, currentLocation.WidthInPixels() / 2, currentLocation.HeightInPixels() / 2, currentLocation);
+            playerCharacter = (PlayerCharacter)dataManager.CreateCharacter(6, currentLocation.WidthInPixels() / 2, currentLocation.HeightInPixels() / 2, currentLocation);
 
             inventory = new Inventory();
             gameDateTime = new GameDateTime();
